@@ -1,14 +1,22 @@
 import os
 import glob, os.path
 import textwrap
-
 import telebot
 from fpdf import FPDF
 
-#bot = telebot.TeleBot('5761249048:AAGNvB3f4vFQb9Dt5Lktb4AtbWQQ_zs1YZI')
-bot = telebot.TeleBot('5278662038:AAHoOOcMOEcv-uPme3M1qlsDqMUsJBAICuA')
+# bot = telebot.TeleBot('5761249048:AAGNvB3f4vFQb9Dt5Lktb4AtbWQQ_zs1YZI')
 local_src = ""
 SRC = './tmp_files/'
+
+
+# чтение токена
+def add_token(path='token.env'):
+    with open(path, 'r') as f:
+        token = f.read().splitlines()
+    return token
+
+
+bot = telebot.TeleBot(add_token(0))
 
 
 # Чат бот принимает файлы
@@ -25,16 +33,17 @@ def handle_docs_photo_docs_photo(message):
         downloaded_file = bot.download_file(file_info.file_path)
 
         src = SRC + message.document.file_name
-        local_src = src #это зачем?
+        local_src = src + chat_id  # добавил что бы пдф не путались если идет несколько запросов одновременно
         with open(src, 'wb') as new_file:
             new_file.write(downloaded_file)
 
         bot.reply_to(message, "Пожалуй, я сохраню это")
         convert_text_pdf(local_src)
-        sendDocument(convert_text_pdf(local_src), chat_id)
+        send_document(convert_text_pdf(local_src), chat_id)
         clear_catalog(SRC)
     except Exception as e:
         bot.reply_to(message, e)
+
 
 # сам конвертер
 def text_to_pdf(text, filename):
@@ -80,13 +89,12 @@ def clear_catalog(folder):
     for f in filelist:
         os.remove(f)
 
+
 # отправка документа
-def sendDocument(file_name: str, chat_id: str):
+def send_document(file_name: str, chat_id: str):
     doc = open(file_name, 'rb')
     bot.send_document(chat_id, doc)
-    #bot.send_document(chat_id, "FILEID")
     doc.close()
 
 
 bot.polling(none_stop=True, interval=0)
-
