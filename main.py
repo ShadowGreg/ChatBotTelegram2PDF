@@ -6,7 +6,7 @@ import telebot
 from fpdf import FPDF
 
 #bot = telebot.TeleBot('5761249048:AAGNvB3f4vFQb9Dt5Lktb4AtbWQQ_zs1YZI')
-bot = telebot.TeleBot('5278662038:AAHoOOcMOEcv-uPme3M1qlsDqMUsJBAICuA')
+bot = telebot.TeleBot('5680800701:AAGknjr3diLU0agCgG4hQfdeQG1Ru1CVros')
 local_src = ""
 SRC = './tmp_files/'
 
