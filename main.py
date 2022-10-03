@@ -5,9 +5,10 @@ import textwrap
 import telebot
 from fpdf import FPDF
 
-bot = telebot.TeleBot('5761249048:AAGNvB3f4vFQb9Dt5Lktb4AtbWQQ_zs1YZI')
+#bot = telebot.TeleBot('5761249048:AAGNvB3f4vFQb9Dt5Lktb4AtbWQQ_zs1YZI')
+bot = telebot.TeleBot('5278662038:AAHoOOcMOEcv-uPme3M1qlsDqMUsJBAICuA')
 local_src = ""
-SRC = 'C:/received/'
+SRC = './tmp_files/'
 
 
 # Чат бот принимает файлы
@@ -24,7 +25,7 @@ def handle_docs_photo_docs_photo(message):
         downloaded_file = bot.download_file(file_info.file_path)
 
         src = SRC + message.document.file_name
-        local_src = src
+        local_src = src #это зачем?
         with open(src, 'wb') as new_file:
             new_file.write(downloaded_file)
 
@@ -83,7 +84,7 @@ def clear_catalog(folder):
 def sendDocument(file_name: str, chat_id: str):
     doc = open(file_name, 'rb')
     bot.send_document(chat_id, doc)
-    bot.send_document(chat_id, "FILEID")
+    #bot.send_document(chat_id, "FILEID")
     doc.close()
 
 
