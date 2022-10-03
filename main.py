@@ -5,7 +5,8 @@ import textwrap
 import telebot
 from fpdf import FPDF
 
-bot = telebot.TeleBot('5761249048:AAGNvB3f4vFQb9Dt5Lktb4AtbWQQ_zs1YZI')
+#bot = telebot.TeleBot('5761249048:AAGNvB3f4vFQb9Dt5Lktb4AtbWQQ_zs1YZI')
+bot = telebot.TeleBot('5278662038:AAHoOOcMOEcv-uPme3M1qlsDqMUsJBAICuA')
 local_src = ""
 SRC = 'C:/received/'
 
@@ -83,7 +84,7 @@ def clear_catalog(folder):
 def sendDocument(file_name: str, chat_id: str):
     doc = open(file_name, 'rb')
     bot.send_document(chat_id, doc)
-    bot.send_document(chat_id, "FILEID")
+    #bot.send_document(chat_id, "FILEID")
     doc.close()
 
 
