@@ -76,7 +76,7 @@ def convert_text_pdf(local_src):
 
 # прочищаем каталог что бы не засорять диск
 def clear_catalog(folder):
-    filelist = glob.glob(os.path.join(folder, "*.bak"))
+    filelist = glob.glob(os.path.join(folder, "*.*"))
     for f in filelist:
         os.remove(f)
 
