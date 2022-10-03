@@ -4,15 +4,25 @@ import textwrap
 
 import telebot
 from fpdf import FPDF
-from settings import TG_TOKEN # создать файл settings.py и в переменную TG_TOKEN завести свой токен
+from settings import TG_TOKEN  # создать файл settings.py и в переменную TG_TOKEN завести свой токен
 
-#bot = telebot.TeleBot('5761249048:AAGNvB3f4vFQb9Dt5Lktb4AtbWQQ_zs1YZI')
+# добавить settings.py в .gitignore
+
 bot = telebot.TeleBot(TG_TOKEN)
 local_src = ""
 SRC = './tmp_files/'
 
 
-# Чат бот принимает файлы
+# 2 реакции на команды для бота.
+@bot.message_handler(commands=['start', 'help'])
+def send_welcome(message):
+    if message.text == '/help':
+        bot.reply_to(message, "Этот бот конвертирует файлы с расширением .txt в .pdf")
+    else:
+        bot.reply_to(message, "Я умею конвертировать из .txt в .pdf, отправь мне файл :)")
+
+
+# Чат бот принимает файлы.
 @bot.message_handler(content_types=['document'])
 def handle_docs_photo_docs_photo(message):
     """
@@ -26,16 +36,17 @@ def handle_docs_photo_docs_photo(message):
         downloaded_file = bot.download_file(file_info.file_path)
 
         src = SRC + message.document.file_name
-        local_src = src #это зачем?
+        local_src = src  # это зачем?
         with open(src, 'wb') as new_file:
             new_file.write(downloaded_file)
 
-        bot.reply_to(message, "Пожалуй, я сохраню это")
+        bot.reply_to(message, "Конвертирую 😉")
         convert_text_pdf(local_src)
         sendDocument(convert_text_pdf(local_src), chat_id)
         clear_catalog(SRC)
     except Exception as e:
         bot.reply_to(message, e)
+
 
 # сам конвертер
 def text_to_pdf(text, filename):
@@ -81,13 +92,13 @@ def clear_catalog(folder):
     for f in filelist:
         os.remove(f)
 
+
 # отправка документа
 def sendDocument(file_name: str, chat_id: str):
     doc = open(file_name, 'rb')
     bot.send_document(chat_id, doc)
-    #bot.send_document(chat_id, "FILEID")
+    # bot.send_document(chat_id, "FILEID")
     doc.close()
 
 
 bot.polling(none_stop=True, interval=0)
-
