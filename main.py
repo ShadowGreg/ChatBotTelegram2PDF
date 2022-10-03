@@ -4,9 +4,10 @@ import textwrap
 
 import telebot
 from fpdf import FPDF
+from settings import TG_TOKEN # создать файл settings.py и в переменную TG_TOKEN завести свой токен
 
 #bot = telebot.TeleBot('5761249048:AAGNvB3f4vFQb9Dt5Lktb4AtbWQQ_zs1YZI')
-bot = telebot.TeleBot('5278662038:AAHoOOcMOEcv-uPme3M1qlsDqMUsJBAICuA')
+bot = telebot.TeleBot(TG_TOKEN)
 local_src = ""
 SRC = './tmp_files/'
 
