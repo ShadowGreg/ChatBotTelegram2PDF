@@ -4,19 +4,22 @@ import textwrap
 import telebot
 from fpdf import FPDF
 
-# bot = telebot.TeleBot('5761249048:AAGNvB3f4vFQb9Dt5Lktb4AtbWQQ_zs1YZI')
 local_src = ""
 SRC = './tmp_files/'
 
 
-# чтение токена
-def add_token(path='token.env'):
-    with open(path, 'r') as f:
-        token = f.read().splitlines()
+# чтение токена. Для того что бы работало надо в папке хранения исполняемого файла создать файл
+# с названием TOKEN в нём прописать свой токен без пробелов энтров - только точ то скопировано и BotFather
+def add_token(path):
+    try:
+        with open(path, 'r') as f:
+            token = f.read().rstrip()
+    except Exception as e:
+        bot.reply_to(e)
     return token
 
 
-bot = telebot.TeleBot(add_token(0))
+bot = telebot.TeleBot(add_token('TOKEN'))
 
 
 # Чат бот принимает файлы
@@ -24,6 +27,7 @@ bot = telebot.TeleBot(add_token(0))
 def handle_docs_photo_docs_photo(message):
     """
     сохранение любого типа файла на компьютер в указанную директорию
+    #TODO Доработать механизм принятия разных файлов и функции конвертации других форматов
     :type message: object
     """
     try:
