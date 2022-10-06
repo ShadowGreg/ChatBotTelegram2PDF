@@ -4,10 +4,10 @@ import textwrap
 
 import telebot
 from fpdf import FPDF
-import sys
-import codecs
-sys.stdout = codecs.getwriter('utf8')(sys.stdout)
-sys.stderr = codecs.getwriter('utf8')(sys.stderr)
+#import sys
+#import codecs
+#sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+#sys.stderr = codecs.getwriter('utf8')(sys.stderr)
 
 
 # Чтение токена. Для того что бы работало надо в папке хранения исполняемого файла создать файл
