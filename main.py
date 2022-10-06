@@ -19,6 +19,15 @@ def add_token(path):
 
 bot = telebot.TeleBot(add_token('TOKEN'))
 
+
+# 2 реакции на команды для бота.
+@bot.message_handler(commands=['start', 'help'])
+def send_welcome(message):
+    if message.text == '/help':
+        bot.reply_to(message, "Этот бот конвертирует файлы с расширением .txt в .pdf")
+    else:
+        bot.reply_to(message, "Я умею конвертировать из .txt в .pdf, отправь мне файл :)")
+
 # Чат бот принимает файлы
 @bot.message_handler(content_types=['document'])
 def handle_docs_photo_docs_photo(message):
@@ -33,11 +42,12 @@ def handle_docs_photo_docs_photo(message):
         file_info = bot.get_file(message.document.file_id)
         downloaded_file = bot.download_file(file_info.file_path)
         src = SRC + message.document.file_name
-        local_src = src + chat_id  # добавил что бы пдф не путались если идет несколько запросов одновременно
+
+        local_src = src + chat_id + ti # добавил что бы пдф не путались если идет несколько запросов одновременно
         with open(src, 'wb') as new_file:
             new_file.write(downloaded_file)
 
-        bot.reply_to(message, "Пожалуй, я сохраню это")
+        bot.reply_to(message, "Конвертирую 😉")
         convert_text_pdf(local_src)
         send_document(convert_text_pdf(local_src), chat_id)
         clear_catalog(SRC)
@@ -62,7 +72,7 @@ def text_to_pdf(text, filename):
     split = text.split('\n')
 
     for line in split:
-        lines = textwrap.wrap(line, width_text)
+        lines = textwrap.wrap(line, int(width_text))  # перенос
 
         if len(lines) == 0:
             pdf.ln()
@@ -76,7 +86,9 @@ def text_to_pdf(text, filename):
 # конвертация текста в pdf
 def convert_text_pdf(local_src):
     output_filename = local_src + '.pdf'
-    file = open(local_src)
+    file = open(local_src, encoding="utf-8")  # если конвертировать UTF-16 - работает на файлах в UTF-16,
+    # но при этом не работает UTF-8, и французский. Надо как-то проверять кодировку файла и разным веткам декодировать
+    # painting.txt пока нигде не работает
     text = file.read()
     file.close()
     text_to_pdf(text, output_filename)
