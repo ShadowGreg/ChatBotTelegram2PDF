@@ -83,6 +83,7 @@ def text_to_pdf(text, filename):
     pdf.output(filename, 'F')
 
 
+
 # конвертация текста в pdf
 def convert_text_pdf(local_src):
     output_filename = local_src + '.pdf'
