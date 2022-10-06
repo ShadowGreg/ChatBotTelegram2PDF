@@ -45,7 +45,7 @@ def handle_docs_photo_docs_photo(message):
 
         src = SRC + message.document.file_name
 
-        local_src = src + chat_id + ti  # добавил что бы пдф не путались если идет несколько запросов одновременно
+        local_src = src + chat_id #+ ti  # добавил что бы пдф не путались если идет несколько запросов одновременно
         with open(src, 'wb') as new_file:
             new_file.write(downloaded_file)
 
