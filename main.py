@@ -7,9 +7,8 @@ from fpdf import FPDF
 local_src = ""
 SRC = './tmp_files/'
 
-
 # чтение токена. Для того что бы работало надо в папке хранения исполняемого файла создать файл
-# с названием TOKEN в нём прописать свой токен без пробелов энтров - только точ то скопировано и BotFather
+# с названием TOKEN в нём прописать свой токен без пробелов энтров - только то что скопировано и BotFather
 def add_token(path):
     try:
         with open(path, 'r') as f:
@@ -18,9 +17,7 @@ def add_token(path):
         bot.reply_to(e)
     return token
 
-
 bot = telebot.TeleBot(add_token('TOKEN'))
-
 
 # Чат бот принимает файлы
 @bot.message_handler(content_types=['document'])
@@ -35,7 +32,6 @@ def handle_docs_photo_docs_photo(message):
 
         file_info = bot.get_file(message.document.file_id)
         downloaded_file = bot.download_file(file_info.file_path)
-
         src = SRC + message.document.file_name
         local_src = src + chat_id  # добавил что бы пдф не путались если идет несколько запросов одновременно
         with open(src, 'wb') as new_file:
