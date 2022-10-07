@@ -1,8 +1,10 @@
 import os
 import glob, os.path
+import shutil
 import textwrap
 import telebot
 from fpdf import FPDF
+
 
 # Чтение токена. Для того что бы работало надо в папке хранения исполняемого файла создать файл
 # с названием TOKEN в нём прописать свой токен без пробелов энтров - только то что скопировано у BotFather
@@ -38,19 +40,31 @@ def handle_docs_photo_docs_photo(message):
     """
     try:
         chat_id = message.chat.id
+        real_file_name, real_file_extension = os.path.splitext(
+            message.document.file_name)  # получаем имя и расширение файла, так что бы пронести переменные до конца
+        file_name = real_file_name.lower()
+        file_extension = real_file_extension.lower()
 
-        file_info = bot.get_file(message.document.file_id)
-        downloaded_file = bot.download_file(file_info.file_path)
+        if file_extension == '.txt':  # проверяем расширение
+            file_info = bot.get_file(message.document.file_id)
+            downloaded_file = bot.download_file(file_info.file_path)
+            src = SRC + file_name + '_' + str(chat_id) + '_' + str(os.times().system)
+            # создаем папку в которой будем временно размещать файл, если таковой не существует
+            if not os.path.exists(src):
+                os.makedirs(src)
+            # создаем путь конечного файла
+            local_src = src + '/' + real_file_name + real_file_extension  # это зачем?
+            # пишем файл на диск
+            with open(local_src, 'wb') as new_file:
+                new_file.write(downloaded_file)
+            bot.reply_to(message, "Конвертирую 😉")
 
-        src = SRC + message.document.file_name
-        local_src = src  # это зачем?
-        with open(src, 'wb') as new_file:
-            new_file.write(downloaded_file)
+            convert_text_pdf(local_src)
+            sendDocument(convert_text_pdf(local_src), chat_id)
+            clear_catalog(SRC)
+        else:
+            bot.reply_to(message, f"я не знаю такого '{file_extension}' формата 😶‍🌫️😇")
 
-        bot.reply_to(message, "Конвертирую 😉")
-        convert_text_pdf(local_src)
-        sendDocument(convert_text_pdf(local_src), chat_id)
-        clear_catalog(SRC)
     except Exception as e:
         bot.reply_to(message, e)
 
@@ -64,22 +78,17 @@ def text_to_pdf(text, filename):
     margin_bottom_mm = 10
     character_width_mm = 7 * pt_to_mm
     width_text = a4_width_mm / character_width_mm
-
     pdf = FPDF(orientation='P', unit='mm', format='A4')
     pdf.set_auto_page_break(True, margin=margin_bottom_mm)
     pdf.add_page()
     pdf.set_font(family='Courier', size=fantasize_pt)
     split = text.split('\n')
-
     for line in split:
         lines = textwrap.wrap(line, int(width_text))  # перенос
-
         if len(lines) == 0:
             pdf.ln()
-
         for wrap in lines:
             pdf.cell(0, fantasize_mm, wrap, ln=1)
-
     pdf.output(filename, 'F')
 
 
@@ -95,11 +104,17 @@ def convert_text_pdf(local_src):
     return output_filename
 
 
-# прочищаем каталог что бы не засорять диск
+# прочищаем каталог от всего что бы не засорять диск
 def clear_catalog(folder):
-    filelist = glob.glob(os.path.join(folder, "*.*"))
-    for f in filelist:
-        os.remove(f)
+    for filename in os.listdir(folder):
+        file_path = os.path.join(folder, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 
 # отправка документа
