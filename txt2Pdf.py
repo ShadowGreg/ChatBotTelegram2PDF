@@ -28,11 +28,11 @@ def text_to_pdf(text, filename):
 
 # конвертация текста в pdf
 def convert_text_pdf(local_src):
-    output_filename = local_src + '.pdf'
+    txt2pdf_filename = local_src + '.pdf'
     file = open(local_src, encoding="utf-8")  # если конвертировать UTF-16 - работает на файлах в UTF-16,
     # но при этом не работает UTF-8, и французский. Надо как-то проверять кодировку файла и разным веткам декодировать
     # painting.txt пока нигде не работает
     text = file.read()
     file.close()
-    text_to_pdf(text, output_filename)
-    return output_filename
+    text_to_pdf(text, txt2pdf_filename)
+    return txt2pdf_filename
