@@ -7,6 +7,13 @@
 
 # 1. Роли
 
+ * main.py
+ * send_doc.py
+ * start_bot.py
+ * add_token.py
+ * clear_catalog.py
+ * txt2Pdf.py
+
 # 2. Расшарить права на БОТа
 
 # 3. Уникальная идентификация файлов пользователей

@@ -1,25 +1,13 @@
 import os
 import os.path
-import shutil
-import telebot
 
 from win32com import client
 
-from txt2Pdf import convert_text_pdf
+from send_doc import send_document
+from start_bot import bot
+from clear_catalog import clear_catalog
+from txt_to_pdf import convert_text_pdf
 
-
-# Чтение токена. Для того что бы работало надо в папке хранения исполняемого файла создать файл
-# с названием TOKEN в нём прописать свой токен без пробелов энтров - только то что скопировано у BotFather
-def add_token(path):
-    try:
-        with open(path, 'r') as f:
-            token = f.read().rstrip()
-    except Exception as e:
-        bot.reply_to(e)
-    return token
-
-
-bot = telebot.TeleBot(add_token('TOKEN'))
 local_src = ""
 SRC = './tmp_files/'
 
@@ -35,7 +23,7 @@ def send_welcome(message):
 
 # Чат бот принимает файлы.
 @bot.message_handler(content_types=['document'])
-def handle_docs_photo_docs_photo(message):
+def handle_docs(message):
     """
     сохранение любого типа файла на компьютер в указанную директорию
     :type message: object
@@ -62,7 +50,7 @@ def handle_docs_photo_docs_photo(message):
             bot.reply_to(message, "Конвертирую 😉")
 
             convert_text_pdf(local_src)
-            sendDocument(convert_text_pdf(local_src), chat_id)
+            send_document(convert_text_pdf(local_src), chat_id)
         if file_extension == '.xls' or '.xlsx':  # проверяем расширение excel
             bot.reply_to(message, "xls")
         else:
@@ -74,7 +62,7 @@ def handle_docs_photo_docs_photo(message):
 
 
 # сам конвертер excel to pdf
-def excel_to_pdf():  # TODO сделать
+def excel_to_pdf(path, input_file_name):  # TODO сделать
     excel2pdf_filename = '0'
     xlApp = client.Dispatch("Excel.Application")
     books = xlApp.Workbooks.Open('C:\\excel\\trial.xls')
@@ -82,27 +70,6 @@ def excel_to_pdf():  # TODO сделать
     ws.Visible = 1
     ws.ExportAsFixedFormat(0, 'C:\\excel\\trial.pdf')
     return excel2pdf_filename
-
-
-# прочищаем каталог от всего что бы не засорять диск
-def clear_catalog(folder):
-    for filename in os.listdir(folder):
-        file_path = os.path.join(folder, filename)
-        try:
-            if os.path.isfile(file_path) or os.path.islink(file_path):
-                os.unlink(file_path)
-            elif os.path.isdir(file_path):
-                shutil.rmtree(file_path)
-        except Exception as e:
-            print('Failed to delete %s. Reason: %s' % (file_path, e))
-
-
-# отправка документа
-def sendDocument(file_name: str, chat_id: str):
-    doc = open(file_name, 'rb')
-    bot.send_document(chat_id, doc)
-    # bot.send_document(chat_id, "FILEID")
-    doc.close()
 
 
 bot.polling(none_stop=True, interval=0)
