@@ -5,6 +5,7 @@ from send_doc import send_document
 from start_bot import bot
 from clear_catalog import clear_catalog
 from txt_to_pdf import convert_text_pdf
+from excel_to_pdf import excel_to_pdf
 
 local_src = ""
 SRC = './tmp_files/'
@@ -34,6 +35,7 @@ def handle_docs(message):
         file_extension = real_file_extension.lower()
 
         if file_extension == '.txt':  # проверяем расширение txt
+            # TODO: доделать так что бы сначала была папку с чат айди потом внутри папки с оригиналами файлов
             file_info = bot.get_file(message.document.file_id)
             downloaded_file = bot.download_file(file_info.file_path)
             src = SRC + file_name + '_' + str(chat_id) + '_' + str(os.times().system)
@@ -46,17 +48,16 @@ def handle_docs(message):
             with open(local_src, 'wb') as new_file:
                 new_file.write(downloaded_file)
             bot.reply_to(message, "Конвертирую 😉")
-
             convert_text_pdf(local_src)
             send_document(convert_text_pdf(local_src), chat_id)
-        if file_extension == '.xls' or '.xlsx':  # проверяем расширение excel
+        elif file_extension == '.xls' or '.xlsx':  # проверяем расширение excel
             bot.reply_to(message, "xls")
-        if file_extension == '.doc' or '.docx':  # проверяем расширение excel
+        elif file_extension == '.doc' or '.docx':  # проверяем расширение excel
             bot.reply_to(message, "doc")
         else:
             bot.reply_to(message, f"я не знаю такого '{file_extension}' формата 😶‍🌫️😇")
 
-        clear_catalog(SRC)
+        clear_catalog(SRC) # ВНИМАНИЕ! теперь функция удаляет и файлы и папки - пути писать аккуратно что бы не затерло системные файлы
     except Exception as e:
         bot.reply_to(message, e)
 
