@@ -1,8 +1,6 @@
 import os
 import os.path
 
-from win32com import client
-
 from send_doc import send_document
 from start_bot import bot
 from clear_catalog import clear_catalog
@@ -69,6 +67,7 @@ def echo(message):
     chat_id = message.from_user.id  # user_id берется из id_сообщения.
     text = '/start - bot info.\n/help - tips.'
     bot.send_message(chat_id, text)
+
 
 
 bot.polling(none_stop=True, interval=0)
