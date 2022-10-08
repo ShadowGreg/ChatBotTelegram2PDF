@@ -16,9 +16,9 @@ SRC = './tmp_files/'
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
     if message.text == '/help':
-        bot.reply_to(message, "Этот бот конвертирует файлы с расширением .txt в .pdf")
+        bot.reply_to(message, "Я умею конвертировать из .txt в .pdf, отправь мне файл c расширением .txt")
     else:
-        bot.reply_to(message, "Я умею конвертировать из .txt в .pdf, отправь мне файл :)")
+        bot.reply_to(message, "Этот бот конвертирует файлы с расширением .txt в .pdf")
 
 
 # Чат бот принимает файлы.
@@ -53,6 +53,8 @@ def handle_docs(message):
             send_document(convert_text_pdf(local_src), chat_id)
         if file_extension == '.xls' or '.xlsx':  # проверяем расширение excel
             bot.reply_to(message, "xls")
+        if file_extension == '.doc' or '.docx':  # проверяем расширение excel
+            bot.reply_to(message, "doc")
         else:
             bot.reply_to(message, f"я не знаю такого '{file_extension}' формата 😶‍🌫️😇")
 
@@ -61,15 +63,12 @@ def handle_docs(message):
         bot.reply_to(message, e)
 
 
-# сам конвертер excel to pdf
-def excel_to_pdf(path, input_file_name):  # TODO сделать
-    excel2pdf_filename = '0'
-    xlApp = client.Dispatch("Excel.Application")
-    books = xlApp.Workbooks.Open('C:\\excel\\trial.xls')
-    ws = books.Worksheets[0]
-    ws.Visible = 1
-    ws.ExportAsFixedFormat(0, 'C:\\excel\\trial.pdf')
-    return excel2pdf_filename
+@bot.message_handler(func=lambda message: True)  # Бот на любое сообщение пользователя, кроме файла
+# и команды отвечает списком всех доступных команд.
+def echo(message):
+    chat_id = message.from_user.id  # user_id берется из id_сообщения.
+    text = '/start - bot info.\n/help - tips.'
+    bot.send_message(chat_id, text)
 
 
 bot.polling(none_stop=True, interval=0)
