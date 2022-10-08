@@ -69,5 +69,4 @@ def echo(message):
     bot.send_message(chat_id, text)
 
 
-
 bot.polling(none_stop=True, interval=0)

@@ -17,7 +17,9 @@
  * start_bot.py
  * add_token.py
  * clear_catalog.py
- * txt2Pdf.py
+ * txt_to_pdf.py
+ * excel_to_pdf.py
+ * word_to_pdf.py
 
 # 2. Расшарить права на БОТа
 
