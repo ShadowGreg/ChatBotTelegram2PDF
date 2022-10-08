@@ -50,9 +50,9 @@ def handle_docs(message):
             bot.reply_to(message, "Конвертирую 😉")
             convert_text_pdf(local_src)
             send_document(convert_text_pdf(local_src), chat_id)
-        if file_extension == '.xls' or '.xlsx':  # проверяем расширение excel
+        elif file_extension == '.xls' or '.xlsx':  # проверяем расширение excel
             bot.reply_to(message, "xls")
-        if file_extension == '.doc' or '.docx':  # проверяем расширение excel
+        elif file_extension == '.doc' or '.docx':  # проверяем расширение excel
             bot.reply_to(message, "doc")
         else:
             bot.reply_to(message, f"я не знаю такого '{file_extension}' формата 😶‍🌫️😇")

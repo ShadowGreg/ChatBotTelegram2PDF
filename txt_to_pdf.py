@@ -1,6 +1,8 @@
 import textwrap
-
+import codecs
 from fpdf import FPDF
+
+from start_bot import bot
 
 
 # сам конвертер txt to pdf
@@ -29,6 +31,10 @@ def text_to_pdf(text, filename):
 # конвертация текста в pdf
 def convert_text_pdf(local_src):
     txt2pdf_filename = local_src + '.pdf'
+    try:
+        f = codecs.open(local_src, "r", "utf-8")
+    except Exception as e:
+        bot.reply_to(e)
     file = open(local_src, encoding="utf-8")  # если конвертировать UTF-16 - работает на файлах в UTF-16,
     # но при этом не работает UTF-8, и французский. Надо как-то проверять кодировку файла и разным веткам декодировать
     # painting.txt пока нигде не работает
