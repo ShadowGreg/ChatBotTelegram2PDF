@@ -57,7 +57,7 @@ def handle_docs(message):
             bot.reply_to(message, "doc")
         elif file_extension == '.jpg' or '.jpeg' or '.png' or '.tiff' or '.jpg2' or '.heif' or '.heic':
             # отсылаем файл пользователю (используем модуль конвертера)
-            send_document(img_2_pdf(local_src), chat_id)
+            send_document(img_2_pdf(local_src, message), chat_id)
         else:
             bot.reply_to(message, f"я не знаю такого '{file_extension}' формата 😶‍🌫️😇")
 

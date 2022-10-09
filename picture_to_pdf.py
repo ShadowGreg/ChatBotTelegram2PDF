@@ -46,7 +46,7 @@ def do_pdf_path(input_image_path, file_extension: str):
 
 
 # конвертируем обычные фото форматы в pdf
-def img_to_pdf(input_image_path: str):
+def img_to_pdf(input_image_path: str, message):
     try:
         # получаем путь pdf
         pdf_path = do_pdf_path(input_image_path, '.pdf')
@@ -64,12 +64,12 @@ def img_to_pdf(input_image_path: str):
         file.close()
     except Exception as e:
         # ловим ошибку и даем её боту
-        bot.reply_to(e)
+        bot.reply_to(message, e)
     return pdf_path
 
 
 # конвертер форматов iOs в pdf
-def ios_img_to_pdf(input_ios_src: str):
+def ios_img_to_pdf(input_ios_src: str, message):
     try:
         heif_file = pillow_heif.open_heif(input_ios_src, convert_hdr_to_8bit=False)
         heif_file.convert_to("BGRA;16" if heif_file.has_alpha else "BGR;16")
@@ -80,25 +80,22 @@ def ios_img_to_pdf(input_ios_src: str):
         output_src = img_2_pdf(png_path)
     except Exception as e:
         # ловим ошибку и даем её боту
-        bot.reply_to(e)
+        bot.reply_to(message, e)
     return output_src
 
 
 # функция выбора направления конвертера
-def img_2_pdf(input_img2pdf_path: str):
+def img_2_pdf(input_img2pdf_path: str, message):
     output_path = '0'
     try:
         # получаем расширение файла
         file_extension = get_file_extension(input_img2pdf_path)
         # проверяем стандарт картинки и передаем в нужную функцию
         if file_extension == '.jpg' or '.jpeg' or '.png' or '.tiff' or '.jpg2':
-            output_path = img_to_pdf(input_img2pdf_path)
+            output_path = img_to_pdf(input_img2pdf_path, message)
         elif file_extension == '.heif' or '.heic':
-            output_path = ios_img_to_pdf(input_img2pdf_path)
+            output_path = ios_img_to_pdf(input_img2pdf_path, message)
     except Exception as e:
         # ловим ошибку и даем её боту
-        bot.reply_to(e)
+        bot.reply_to(message, e)
     return output_path
-
-
-ios_img_to_pdf('./tmp_files/sample1.heic')
