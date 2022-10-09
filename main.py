@@ -32,14 +32,16 @@ def handle_docs(message):
     try:
         chat_id = message.chat.id
         # получаем имя и расширение файла, так что бы пронести переменные до конца
-        real_file_name, real_file_extension = os.path.splitext(message.document.file_name)
+        get_object = message.document  # получаемый объект
+        real_file_name, real_file_extension = os.path.splitext(get_object.file_name) # бот не понимает картинку
         file_name = real_file_name.lower()
         file_extension = real_file_extension.lower()
         # TODO: доделать так что бы сначала была папку с чат айди потом внутри папки с оригиналами файлов
-        file_info = bot.get_file(message.document.file_id)
+        file_info = bot.get_file(get_object.file_id)
         downloaded_file = bot.download_file(file_info.file_path)
         src = SRC + file_name + '_' + str(chat_id) + '_' + str(datetime.today().strftime('%Y-%m-%d %H-%M-%S'))
         # создаем папку в которой будем временно размещать файл, если таковой не существует
+        bot.reply_to(message, f"Пожалуй сохраню {file_name} 😉")
         if not os.path.exists(src):
             os.makedirs(src)
         # создаем путь конечного файла - думаю надо переделать - это временный вариант
@@ -58,13 +60,15 @@ def handle_docs(message):
             bot.reply_to(message, "doc")
         elif file_extension == '.jpg' or '.jpeg' or '.png' or '.tiff' or '.jpg2' or '.heif' or '.heic':
             # отсылаем файл пользователю (используем модуль конвертера)
+            bot.reply_to(message, "Конвертирую картинку в pdf 😉")
+            img_2_pdf(local_src, message)
             send_document(img_2_pdf(local_src, message), chat_id)
         else:
             bot.reply_to(message, f"я не знаю такого '{file_extension}' формата 😶‍🌫️😇")
         clear_catalog(src)  # ВНИМАНИЕ! теперь функция удаляет и файлы и папки - пути писать аккуратно что бы не затерло системные файлы
+
     except Exception as e:
         bot.reply_to(message, e)
-
 
 @bot.message_handler(func=lambda message: True)  # Бот на любое сообщение пользователя, кроме файла
 # и команды отвечает списком всех доступных команд.
