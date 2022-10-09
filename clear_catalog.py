@@ -13,3 +13,7 @@ def clear_catalog(folder):
                 shutil.rmtree(file_path)
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
+    try:
+        os.rmdir(folder)
+    except Exception as e:
+        print('Failed to delete %s. Reason: %s' % (folder, e))
