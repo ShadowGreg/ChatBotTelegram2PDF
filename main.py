@@ -6,6 +6,7 @@ from start_bot import bot
 from clear_catalog import clear_catalog
 from txt_to_pdf import convert_text_pdf
 from excel_to_pdf import excel_to_pdf
+from picture_to_pdf import img_2_pdf
 
 local_src = ""
 SRC = './tmp_files/'
@@ -42,7 +43,7 @@ def handle_docs(message):
             # создаем папку в которой будем временно размещать файл, если таковой не существует
             if not os.path.exists(src):
                 os.makedirs(src)
-            # создаем путь конечного файла
+            # создаем путь конечного файла - думаю надо переделать - это временный вариант
             local_src = src + '/' + real_file_name + real_file_extension
             # пишем файл на диск
             with open(local_src, 'wb') as new_file:
@@ -54,10 +55,14 @@ def handle_docs(message):
             bot.reply_to(message, "xls")
         elif file_extension == '.doc' or '.docx':  # проверяем расширение excel
             bot.reply_to(message, "doc")
+        elif file_extension == '.jpg' or '.jpeg' or '.png' or '.tiff' or '.jpg2' or '.heif' or '.heic':
+            # отсылаем файл пользователю (используем модуль конвертера)
+            send_document(img_2_pdf(local_src), chat_id)
         else:
             bot.reply_to(message, f"я не знаю такого '{file_extension}' формата 😶‍🌫️😇")
 
-        clear_catalog(SRC) # ВНИМАНИЕ! теперь функция удаляет и файлы и папки - пути писать аккуратно что бы не затерло системные файлы
+        clear_catalog(
+            SRC)  # ВНИМАНИЕ! теперь функция удаляет и файлы и папки - пути писать аккуратно что бы не затерло системные файлы
     except Exception as e:
         bot.reply_to(message, e)
 

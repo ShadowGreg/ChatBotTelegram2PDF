@@ -11,7 +11,7 @@ import cv2
 """"
 что бы вставить в условия файла main - надо проверить файл на расширения
 '.jpg' or '.jpeg' or '.png' or '.tiff' or '.jpg2' or '.heif' or '.heic'
-и вставить функцию файла img2pdf(сюда передавать адрес файла в str)
+и вставить функцию файла img_to_pdf(сюда передавать адрес файла в str)
  выходное значение адрес файла в c .pdf
 """""
 
@@ -38,15 +38,22 @@ def get_file_extension(input_path: str):
     return file_extension
 
 
+# формируем путь файла c нужным расширением <file_extension>
+def do_pdf_path(input_image_path, file_extension: str):
+    # обрезаем полученный путь до расширения и прибавляем заданное расширение
+    pdf_path = get_file_path(input_image_path) + file_extension
+    return pdf_path
+
+
 # конвертируем обычные фото форматы в pdf
 def img_to_pdf(input_image_path: str):
     try:
         # получаем путь pdf
-        pdf_path = get_file_path(input_image_path) + '.pdf'
+        pdf_path = do_pdf_path(input_image_path, '.pdf')
         # открываем картинку
         image = Image.open(input_image_path)
         # используем конвертер img2pdf
-        pdf_bytes = img2pdf.convert(image)
+        pdf_bytes = img2pdf.convert(image.filename)
         # создаем pdf файл
         file = open(pdf_path, "wb")
         # пишем куски pdf файла
@@ -63,16 +70,22 @@ def img_to_pdf(input_image_path: str):
 
 # конвертер форматов iOs в pdf
 def ios_img_to_pdf(input_ios_src: str):
-    output_src = ''
-    heif_file = pillow_heif.open_heif("images/rgb12.heif", convert_hdr_to_8bit=False)
-    heif_file.convert_to("BGRA;16" if heif_file.has_alpha else "BGR;16")
-    np_array = np.asarray(heif_file)
-    cv2.imwrite("rgb16.png", np_array)
+    try:
+        heif_file = pillow_heif.open_heif(input_ios_src, convert_hdr_to_8bit=False)
+        heif_file.convert_to("BGRA;16" if heif_file.has_alpha else "BGR;16")
+        np_array = np.asarray(heif_file)
+        png_path = do_pdf_path(input_ios_src, '.png')
+        cv2.imwrite(png_path, np_array)
+        np.allclose
+        output_src = img_2_pdf(png_path)
+    except Exception as e:
+        # ловим ошибку и даем её боту
+        bot.reply_to(e)
     return output_src
 
 
 # функция выбора направления конвертера
-def img2pdf(input_img2pdf_path: str):
+def img_2_pdf(input_img2pdf_path: str):
     output_path = '0'
     try:
         # получаем расширение файла
@@ -86,3 +99,6 @@ def img2pdf(input_img2pdf_path: str):
         # ловим ошибку и даем её боту
         bot.reply_to(e)
     return output_path
+
+
+ios_img_to_pdf('./tmp_files/sample1.heic')
