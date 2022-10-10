@@ -6,7 +6,6 @@ from start_bot import bot
 from clear_catalog import clear_catalog
 from txt_to_pdf import convert_text_pdf
 from excel_to_pdf import excel_to_pdf
-from picture_to_pdf import img_2_pdf
 from datetime import datetime
 
 local_src = ""
