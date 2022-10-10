@@ -1,4 +1,4 @@
-from win32com import client # крос платворменные библиотеки
+from win32com import client  # крос платворменные библиотеки
 
 
 def word_to_pdf(path, input_file_name):  # TODO сделать
