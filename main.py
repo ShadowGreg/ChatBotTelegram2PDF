@@ -55,7 +55,7 @@ def handle_docs(message):
         downloaded_file = bot.download_file(file_info.file_path)
         src = SRC + file_name + '_' + str(chat_id) + '_' + str(datetime.today().strftime('%Y-%m-%d %H-%M-%S'))
         # создаем папку в которой будем временно размещать файл, если таковой не существует
-        bot.reply_to(message, f"Пожалуй сохраню {file_name} 😉")
+        bot.reply_to(message, f"Пожалуй сохраню {file_name} 😉")  # Нужно ли это писать? Выглядит перебором!
         if not os.path.exists(src):
             os.makedirs(src)
         # создаем путь конечного файла - думаю надо переделать - это временный вариант
@@ -64,8 +64,8 @@ def handle_docs(message):
         with open(local_src, 'wb') as new_file:
             new_file.write(downloaded_file)
         if file_extension == '.txt':  # проверяем расширение txt
-            bot.reply_to(message, "Конвертирую 😉")
-            convert_text_pdf(local_src)
+            bot.reply_to(message, "Конвертирую 😉")  # Нужно ли это писать? Выглядит перебором! Предлагаю минимализм
+            convert_text_pdf(local_src)  # и весь лишний вывод вообще убрать. Оставим пока так, для наглядности.
             send_document(convert_text_pdf(local_src), chat_id)
         elif file_extension == '.xls' \
                 or file_extension == '.xlsx':  # проверяем расширение excel
