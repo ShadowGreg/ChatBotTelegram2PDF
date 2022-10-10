@@ -36,7 +36,6 @@ def handle_docs(message):
         real_file_name, real_file_extension = os.path.splitext(get_object.file_name)  # бот не понимает картинку
         file_name = real_file_name.lower()
         file_extension = real_file_extension.lower()
-        # TODO: доделать так что бы сначала была папку с чат айди потом внутри папки с оригиналами файлов
         file_info = bot.get_file(get_object.file_id)
         downloaded_file = bot.download_file(file_info.file_path)
         src = SRC + file_name + '_' + str(chat_id) + '_' + str(datetime.today().strftime('%Y-%m-%d %H-%M-%S'))
@@ -49,7 +48,6 @@ def handle_docs(message):
         # пишем файл на диск
         with open(local_src, 'wb') as new_file:
             new_file.write(downloaded_file)
-
         if file_extension == '.txt':  # проверяем расширение txt
             bot.reply_to(message, "Конвертирую 😉")
             convert_text_pdf(local_src)
@@ -74,10 +72,15 @@ def handle_docs(message):
         else:
             bot.reply_to(message, f"я не знаю такого '{file_extension}' формата 😶‍🌫️😇")
         clear_catalog(
-            src)  # ВНИМАНИЕ! теперь функция удаляет и файлы и папки - пути писать аккуратно что бы не затерло системные файлы
-
+            src)  # ВНИМАНИЕ!
+        # теперь функция удаляет и файлы и папки - пути писать аккуратно что бы не затерло системные файлы
     except Exception as e:
         bot.reply_to(message, e)
+
+
+@bot.message_handler(content_types=['photo'])
+def photo(message):
+    bot.send_message(message, 'фото')
 
 
 @bot.message_handler(func=lambda message: True)  # Бот на любое сообщение пользователя, кроме файла
