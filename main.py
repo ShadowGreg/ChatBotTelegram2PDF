@@ -53,7 +53,7 @@ def handle_docs(message):
         file_extension = real_file_extension.lower()
         file_info = bot.get_file(get_object.file_id)
         downloaded_file = bot.download_file(file_info.file_path)
-        src = SRC + file_name + '_' + str(chat_id) + '_' + str(datetime.today().strftime('%Y-%m-%d %H-%M-%S'))
+        src = SRC + str(chat_id) + '_' + str(datetime.today().strftime('%Y%m%d%H%M%S'))
         # создаем папку в которой будем временно размещать файл, если таковой не существует
         bot.reply_to(message, f"Пожалуй сохраню {file_name} 😉")  # Нужно ли это писать? Выглядит перебором!
         if not os.path.exists(src):
@@ -64,7 +64,7 @@ def handle_docs(message):
         with open(local_src, 'wb') as new_file:
             new_file.write(downloaded_file)
         if file_extension == '.txt':  # проверяем расширение txt
-            bot.reply_to(message, "Конвертирую 😉")  # Нужно ли это писать? Выглядит перебором! Предлагаю минимализм
+            bot.reply_to(message, "Конвертирую ⚙️⚙")  # Нужно ли это писать? Выглядит перебором! Предлагаю минимализм
             convert_text_pdf(local_src)  # и весь лишний вывод вообще убрать. Оставим пока так, для наглядности.
             send_document(convert_text_pdf(local_src), chat_id)
         elif file_extension == '.xls' \
@@ -73,17 +73,17 @@ def handle_docs(message):
         elif file_extension == '.doc' \
                 or file_extension == '.docx':  # проверяем расширение doc
             bot.reply_to(message, "doc")
-        elif file_extension == '.jpg' or \
-                file_extension == '.jpeg' or \
-                file_extension == '.png' or \
-                file_extension == '.tiff' or \
-                file_extension == '.jpg2' or \
-                file_extension == '.heif' or \
-                file_extension == '.heic':  # картинок
+        elif file_extension == '.jpg' \
+                or file_extension == '.jpeg' \
+                or file_extension == '.png' \
+                or file_extension == '.tiff' \
+                or file_extension == '.jpg2' \
+                or file_extension == '.heif'\
+                or file_extension == '.heic':  # картинок
             # отсылаем файл пользователю (используем модуль конвертера)
-            bot.reply_to(message, "Конвертирую картинку в pdf 😉")
-            img_2_pdf(local_src, message)
-            send_document(img_2_pdf(local_src, message), chat_id)
+            bot.reply_to(message, "Конвертирую картинку в pdf ⚙️⚙️")
+            img_2_pdf(local_src)
+            send_document(img_2_pdf(local_src), chat_id)
         else:
             bot.reply_to(message, f"я не знаю такого '{file_extension}' формата 😶‍🌫️😇")
         clear_catalog(
