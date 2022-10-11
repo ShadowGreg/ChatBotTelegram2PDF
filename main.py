@@ -57,7 +57,7 @@ def handle_docs(message):
         chat_id = message.chat.id
         # получаем имя и расширение файла, так что бы пронести переменные до конца
         get_object = message.document  # получаемый объект
-        real_file_name, real_file_extension = os.path.splitext(get_object.file_name)
+        real_file_name, real_file_extension = os.path.splitext(get_object.file_name)  # бот не понимает картинку
         file_name = real_file_name.lower()
         file_extension = real_file_extension.lower()
         file_info = bot.get_file(get_object.file_id)
