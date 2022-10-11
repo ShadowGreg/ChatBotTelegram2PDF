@@ -78,7 +78,7 @@ def handle_docs(message):
                 or file_extension == '.png' \
                 or file_extension == '.tiff' \
                 or file_extension == '.jpg2' \
-                or file_extension == '.heif'\
+                or file_extension == '.heif' \
                 or file_extension == '.heic':  # картинок
             # отсылаем файл пользователю (используем модуль конвертера)
             bot.reply_to(message, "Конвертирую картинку в pdf ⚙️⚙️")
