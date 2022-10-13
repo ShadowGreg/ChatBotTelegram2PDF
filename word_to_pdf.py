@@ -1,11 +1,10 @@
 from win32com import client  # крос платворменные библиотеки
+from docx2pdf import convert
+import  pythoncom
 
-
-def word_to_pdf(path, input_file_name):  # TODO сделать
-    excel2pdf_filename = '0'
-    xlApp = client.Dispatch("Excel.Application")
-    books = xlApp.Workbooks.Open('C:\\excel\\trial.xls')
-    ws = books.Worksheets[0]
-    ws.Visible = 1
-    ws.ExportAsFixedFormat(0, 'C:\\excel\\trial.pdf')
-    return excel2pdf_filename
+pythoncom.CoInitializeEx(0)
+def word_to_pdf(input_file_name):  # TODO сделать
+    doc2pdf_filename = convert(input_file_name)
+    #convert("my_docx_folder/")
+    print(input_file_name)
+    return doc2pdf_filename
