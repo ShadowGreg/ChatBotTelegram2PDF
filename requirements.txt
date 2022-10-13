@@ -1,0 +1,6 @@
+pytelegrambotapi
+numpy
+opencv-python
+img2pdf
+pillow-heif
+pillow
