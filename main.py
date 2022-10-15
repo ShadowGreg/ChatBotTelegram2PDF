@@ -1,6 +1,6 @@
 import os
 import os.path
-
+import pythoncom
 from send_doc import send_document
 from start_bot import bot
 from clear_catalog import clear_catalog
@@ -8,10 +8,11 @@ from txt_to_pdf import convert_text_pdf
 from excel_to_pdf import excel_to_pdf
 from picture_to_pdf import img_2_pdf
 from datetime import datetime
+import word_to_pdf
+import hm
 
 local_src = ""
 SRC = './tmp_files/'
-
 
 # 2 реакции на команды для бота.
 @bot.message_handler(commands=['start', 'help', 'info'])  # tab-ы не трогать!
@@ -67,7 +68,6 @@ def handle_docs(message):
         downloaded_file = bot.download_file(file_info.file_path)
         src = SRC + str(chat_id) + '_' + str(datetime.today().strftime('%Y%m%d%H%M%S'))
         # создаем папку в которой будем временно размещать файл, если таковой не существует
-        # bot.reply_to(message, f"Пожалуй сохраню {file_name} 😉")  # Нужно ли это писать? Выглядит перебором!
         if not os.path.exists(src):
             os.makedirs(src)
         # создаем путь конечного файла - думаю надо переделать - это временный вариант
@@ -89,19 +89,13 @@ def file_switcher(chat_id, file_extension, local_src, message, src):
         conversion_message(message)
         convert_text_pdf(local_src)
         send_document(convert_text_pdf(local_src), chat_id)
-    elif file_extension == '.xls' \
-            or file_extension == '.xlsx':  # проверяем расширение excel
+    elif file_extension in hm.xls_ext:  # проверяем расширение excel
         bot.reply_to(message, "xls")
-    elif file_extension == '.doc' \
-            or file_extension == '.docx':  # проверяем расширение doc
-        bot.reply_to(message, "doc")
-    elif file_extension == '.jpg' \
-            or file_extension == '.jpeg' \
-            or file_extension == '.png' \
-            or file_extension == '.tiff' \
-            or file_extension == '.jpg2' \
-            or file_extension == '.heif' \
-            or file_extension == '.heic':  # картинок
+    elif file_extension in hm.doc_ext:  # проверяем расширение doc
+        bot.reply_to(message, f"Конвертирую {file_extension} в PDF ⚙️⚙")
+        send_document(word_to_pdf.word_to_pdf(local_src))
+        #bot.reply_to(message, "doc")
+    elif file_extension in hm.img_ext:  # картинок
         # отсылаем файл пользователю (используем модуль конвертера)
         conversion_message(message)
         img_2_pdf(local_src)
