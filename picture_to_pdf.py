@@ -7,6 +7,7 @@ from start_bot import bot
 import numpy as np
 # pip install opencv-python
 import cv2
+import hm
 
 """"
 что бы вставить в условия файла main - надо проверить файл на расширения
@@ -91,14 +92,9 @@ def img_2_pdf(input_img2pdf_path: str):
         # получаем расширение файла
         file_extension = get_file_extension(input_img2pdf_path)
         # проверяем стандарт картинки и передаем в нужную функцию
-        if file_extension == '.jpg' \
-                or file_extension == '.jpeg' \
-                or file_extension == '.png' \
-                or file_extension == '.tiff' \
-                or file_extension == '.jpg2':
+        if file_extension in hm.img_ext:
             output_path = img_to_pdf(input_img2pdf_path)
-        elif file_extension == '.heif' \
-                or file_extension == '.heic':
+        elif file_extension in hm.img_ext_ios:
             output_path = ios_img_to_png(input_img2pdf_path)
     except Exception as e:
         # ловим ошибку и даем её боту
