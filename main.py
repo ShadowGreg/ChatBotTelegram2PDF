@@ -13,6 +13,7 @@ import hm
 
 local_src = ""
 SRC = './tmp_files/'
+clear_time = '14'
 
 # 2 реакции на команды для бота.
 @bot.message_handler(commands=['start', 'help', 'info'])  # tab-ы не трогать!
@@ -50,6 +51,14 @@ def send_welcome(message):
 https://dribbble.com/shots/15118338-Cute-messaging-bot''')
 
 
+# чистка папки назначения
+def clear_src():
+    if datetime.now().strftime("%H") == clear_time:
+        clear_catalog(SRC)
+        if not os.path.exists(SRC):
+            os.makedirs(SRC)
+
+
 # Чат бот принимает файлы.
 @bot.message_handler(content_types=['document'])
 def handle_docs(message):
@@ -85,6 +94,7 @@ def conversion_message(message):  # Сообщение пользователю,
 
 
 def file_switcher(chat_id, file_extension, local_src, message, src):
+    clear_src()
     if file_extension == '.txt':  # проверяем расширение txt
         conversion_message(message)
         convert_text_pdf(local_src)
