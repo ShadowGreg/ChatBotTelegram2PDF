@@ -1,6 +1,6 @@
 import os
 import os.path
-import pythoncom
+
 from send_doc import send_document
 from start_bot import bot
 from clear_catalog import clear_catalog
@@ -104,7 +104,7 @@ def file_switcher(chat_id, file_extension, local_src, message, src):
     elif file_extension in hm.doc_ext:  # проверяем расширение doc
         bot.reply_to(message, f"Конвертирую {file_extension} в PDF ⚙️⚙")
         send_document(word_to_pdf.word_to_pdf(local_src))
-        #bot.reply_to(message, "doc")
+
     elif file_extension in hm.img_ext:  # картинок
         # отсылаем файл пользователю (используем модуль конвертера)
         conversion_message(message)
