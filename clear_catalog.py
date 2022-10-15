@@ -2,7 +2,7 @@ import os
 import shutil
 
 
-# прочищаем каталог от всего что бы не засорять диск
+# прочищаем каталог от всего что бы не засорять диск и сам каталог тоже удаляем
 def clear_catalog(folder):
     for filename in os.listdir(folder):
         file_path = os.path.join(folder, filename)

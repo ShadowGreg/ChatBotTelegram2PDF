@@ -11,6 +11,7 @@ from datetime import datetime
 
 local_src = ""
 SRC = './tmp_files/'
+clear_time = '14'
 
 
 # 2 реакции на команды для бота.
@@ -46,6 +47,14 @@ def send_welcome(message):
 Мы сделали этот проект для вас и для наших друзей и близких! Приятного использования 😇''')
 
 
+# чистка папки назначения
+def clear_src():
+    if datetime.now().strftime("%H") == clear_time:
+        clear_catalog(SRC)
+        if not os.path.exists(SRC):
+            os.makedirs(SRC)
+
+
 # Чат бот принимает файлы.
 @bot.message_handler(content_types=['document'])
 def handle_docs(message):
@@ -78,6 +87,7 @@ def handle_docs(message):
 
 
 def file_switcher(chat_id, file_extension, local_src, message, src):
+    clear_src()
     if file_extension == '.txt':  # проверяем расширение txt
         bot.reply_to(message, "Конвертирую ⚙️⚙")  # Нужно ли это писать? Выглядит перебором! Предлагаю минимализм
         convert_text_pdf(local_src)  # и весь лишний вывод вообще убрать. Оставим пока так, для наглядности.
@@ -110,14 +120,14 @@ def photo(message):
     chat_id = message.chat.id
     file_id = message.photo[-1].file_id
     file_info = bot.get_file(file_id)
-    file_extension = '.'+bot.get_file(file_id).file_path.split('.')[1]
+    file_extension = '.' + bot.get_file(file_id).file_path.split('.')[1]
     downloaded_file = bot.download_file(file_info.file_path)
     src = SRC + str(chat_id) + '_' + str(datetime.today().strftime('%Y%m%d%H%M%S'))
     # создаем папку в которой будем временно размещать файл, если таковой не существует
     if not os.path.exists(src):
         os.makedirs(src)
     # создаем путь конечного файла - думаю надо переделать - это временный вариант
-    local_src = src + '/' + 'image'+ file_extension
+    local_src = src + '/' + 'image' + file_extension
     with open(local_src, 'wb') as new_file:
         new_file.write(downloaded_file)
     file_switcher(chat_id, file_extension, local_src, message, src)
