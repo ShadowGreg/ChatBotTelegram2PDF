@@ -1,16 +1,14 @@
 import os
 import os.path
-import pythoncom
 from send_doc import send_document
 from start_bot import bot
 from clear_catalog import clear_catalog
 from txt_to_pdf import convert_text_pdf
-from excel_to_pdf import excel_to_pdf
 from picture_to_pdf import img_2_pdf
 from datetime import datetime
 import word_to_pdf
 import hm
-from db import data_base
+import data_base
 
 local_src = ""
 SRC = './tmp_files/'
@@ -101,6 +99,7 @@ def file_switcher(chat_id, file_extension, local_src, message, src):
         conversion_message(message)
         convert_text_pdf(local_src)
         send_document(convert_text_pdf(local_src), chat_id)
+        data_base.get_text_messages(message)
     elif file_extension in hm.xls_ext:  # проверяем расширение excel
         bot.reply_to(message, "xls")
     elif file_extension in hm.doc_ext:  # проверяем расширение doc
