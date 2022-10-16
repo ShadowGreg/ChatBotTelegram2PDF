@@ -2,6 +2,9 @@ import sqlite3
 from ChatBotTelegram2PDF.start_bot import bot
 from datetime import datetime
 from os import path
+import os
+import sys
+sys.path.insert(0, os.path.abspath(".."))
 
 
 # Work with DB.

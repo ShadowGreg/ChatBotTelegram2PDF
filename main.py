@@ -8,7 +8,10 @@ from picture_to_pdf import img_2_pdf
 from datetime import datetime
 import word_to_pdf
 import hm
+import sys
+sys.path.insert(0, os.path.abspath(".."))
 from ChatBotTelegram2PDF.db import data_base
+
 
 local_src = ""
 SRC = './tmp_files/'
