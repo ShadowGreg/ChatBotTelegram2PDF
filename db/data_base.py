@@ -4,6 +4,7 @@ from datetime import datetime
 from os import path
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath(".."))
 
 
@@ -14,10 +15,10 @@ def db_add_val(user_id: int, username: str, registration_date: str, last_used: s
     db.commit()
 
 
-def upd_last_used(username: str, last_used: str):
+def upd_last_used(username: str, last_used: str, user_id: int):
     cursor.execute(
-        'UPDATE users SET (username, last_used) VALUES (?, ?) WHERE user_id = ?',
-        (username, last_used))
+        'UPDATE users SET username = ?, last_used = ? WHERE user_id = ?',
+        (username, last_used, user_id))
     db.commit()
 
 
@@ -28,7 +29,6 @@ def get_script_dir():
 
 DB_NAME = 'data_base.db'
 DB_FILE = get_script_dir() + path.sep + DB_NAME
-
 try:
     db = sqlite3.connect(DB_FILE, check_same_thread=False)  # Connect DB.
     cursor = db.cursor()  # Create cursor for work with tables.
@@ -43,16 +43,20 @@ except sqlite3.Error as e:
 
 
 def update_db(message):
-    bot.send_message(message.from_user.id, 'Привет! Ваше имя добавленно в базу данных!')
+    try:
+        bot.send_message(message.from_user.id, 'Привет! Ваше имя добавленно в базу данных!')
 
-    user_id = message.from_user.id
-    username = message.from_user.username
-    registration_date = str(datetime.today().strftime('%Y%m%d%H%M%S'))
-    last_used = str(datetime.today().strftime('%Y%m%d%H%M%S'))
+        user_id = message.from_user.id
+        username = message.from_user.username
+        registration_date = str(datetime.today().strftime('%Y%m%d%H%M%S'))
+        last_used = str(datetime.today().strftime('%Y%m%d%H%M%S'))
 
-    check_for_user_id = cursor.execute('SELECT * FROM data_base.db WHERE user_id=?', (user_id,))
-    if check_for_user_id.fetchone() is None:  # Делаем когда нету человека в бд
-        db_add_val(user_id=user_id, username=username, registration_date=registration_date, last_used=last_used)
-
-# else:  # Делаем когда есть человек в бд
-#    upd_last_used(username=username, last_used=last_used)
+        check_for_user_id = cursor.execute('SELECT * FROM users WHERE user_id=?', (user_id,))
+        if check_for_user_id.fetchone() is None:  # Делаем когда нету человека в бд
+            db_add_val(user_id=user_id, username=username, registration_date=registration_date, last_used=last_used)
+        else:  # Делаем когда есть человек в бд
+            upd_last_used(username=username, last_used=last_used, user_id=user_id)
+    except sqlite3.Error as i:
+        print("Ошибка при работе с SQLite", i)
+# it's working now! added database. functions: add new user,
+# update user last_used datetime. To be done: testing, update username also. Hide output from user.
