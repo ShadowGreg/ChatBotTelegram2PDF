@@ -1,4 +1,4 @@
-import os
+
 import os.path
 from send_doc import send_document
 from start_bot import bot
@@ -8,9 +8,7 @@ from picture_to_pdf import img_2_pdf
 from datetime import datetime
 import word_to_pdf
 import hm
-import sys
-sys.path.insert(0, os.path.abspath(".."))
-from ChatBotTelegram2PDF.db import data_base
+
 
 
 local_src = ""
@@ -101,8 +99,7 @@ def file_switcher(chat_id, file_extension, local_src, message, src):
     if file_extension == '.txt':  # проверяем расширение txt
         conversion_message(message)
         convert_text_pdf(local_src)
-        send_document(convert_text_pdf(local_src), chat_id)
-        data_base.update_db(message)
+        send_document(convert_text_pdf(local_src), chat_id, message)
     elif file_extension in hm.xls_ext:  # проверяем расширение excel
         bot.reply_to(message, "xls")
     elif file_extension in hm.doc_ext:  # проверяем расширение doc
@@ -113,7 +110,7 @@ def file_switcher(chat_id, file_extension, local_src, message, src):
         # отсылаем файл пользователю (используем модуль конвертера)
         conversion_message(message)
         img_2_pdf(local_src)
-        send_document(img_2_pdf(local_src), chat_id)
+        send_document(img_2_pdf(local_src), chat_id, message)
     else:
         bot.reply_to(message, f"я не знаю такого '{file_extension}' формата 😇 /help - поддерживаемые форматы")
         # теперь функция удаляет и файлы и папки - пути писать аккуратно что бы не затерло системные файлы
