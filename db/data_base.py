@@ -5,7 +5,7 @@ from os import path
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath(".."))
+sys.path.insert(0, os.path.abspath(".."))  # Absolute path to DB.
 
 
 # Work with DB.
@@ -44,7 +44,7 @@ except sqlite3.Error as e:
 
 def update_db(message):
     try:
-        bot.send_message(message.from_user.id, 'Привет! Ваше имя добавленно в базу данных!')
+        bot.send_message(message.from_user.id, 'Большой брат следит за тобой!')  # Отладочное сообщение.
 
         user_id = message.from_user.id
         username = message.from_user.username
@@ -58,5 +58,4 @@ def update_db(message):
             upd_last_used(username=username, last_used=last_used, user_id=user_id)
     except sqlite3.Error as i:
         print("Ошибка при работе с SQLite", i)
-# it's working now! added database. functions: add new user,
-# update user last_used datetime. To be done: testing, update username also. Hide output from user.
+# To be done: hide output from user.
