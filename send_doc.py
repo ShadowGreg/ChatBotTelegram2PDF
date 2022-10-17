@@ -10,5 +10,5 @@ from ChatBotTelegram2PDF.db import data_base
 def send_document(file_name: str, chat_id: str, message):
     doc = open(file_name, 'rb')
     bot.send_document(chat_id, doc)
-    data_base.update_db(message)
+    data_base.connect_db(message)
     doc.close()
