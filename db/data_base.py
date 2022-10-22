@@ -27,10 +27,9 @@ def get_script_dir():
     return path.dirname(abs_path)
 
 
-def update_db(db, cursor, message):
+def update_db(db, cursor, message):  # Upd database / add info about new user.
     try:
-        bot.send_message(message.from_user.id, 'Большой брат следит за тобой!')  # Отладочное сообщение.
-
+        # bot.send_message(message.from_user.id, 'Большой брат следит за тобой!')  # Отладочное сообщение.
         user_id = message.from_user.id
         username = message.from_user.username
         registration_date = str(datetime.today().strftime('%Y%m%d%H%M%S'))
@@ -38,26 +37,26 @@ def update_db(db, cursor, message):
 
         check_for_user_id = cursor.execute('SELECT * FROM users WHERE user_id=?', (user_id,))
         if check_for_user_id.fetchone() is None:  # Делаем когда нету человека в бд
-            db_add_val(db, cursor, user_id=user_id, username=username, registration_date=registration_date, last_used=last_used)
+            db_add_val(db, cursor, user_id=user_id, username=username, registration_date=registration_date,
+                       last_used=last_used)
         else:  # Делаем когда есть человек в бд
             upd_last_used(db, cursor, username=username, last_used=last_used, user_id=user_id)
     except sqlite3.Error as i:
         print("Ошибка при работе с SQLite", i)
 
 
-# To be done: hide output from user.
-
-def connect_db(message):
+def connect_db(message):  # connect to bd.
     try:
         db = sqlite3.connect(DB_FILE, check_same_thread=False)  # Connect DB.
         cursor = db.cursor()  # Create cursor for work with tables.
+        # print("Соединение с SQLite open")
         update_db(db, cursor, message)
     except sqlite3.Error as e:
         print("Ошибка при работе с SQLite", e)
     finally:  # закрыть соединение, когда все закончено.
         if db:
             cursor.close()
-        print("Соединение с SQLite закрыто")
+        # print("Соединение с SQLite закрыто")
 
 
 DB_NAME = 'data_base.db'
