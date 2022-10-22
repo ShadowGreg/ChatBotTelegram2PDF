@@ -14,6 +14,7 @@ import hm
 local_src = ""
 SRC = './tmp_files/'
 
+
 # 2 реакции на команды для бота.
 @bot.message_handler(commands=['start', 'help', 'info'])  # tab-ы не трогать!
 def send_welcome(message):
@@ -48,8 +49,6 @@ def send_welcome(message):
 Мы сделали этот проект для вас и для наших друзей и близких! Приятного использования 😇
 Картинка профиля бота - Cute messaging bot by DewApples
 https://dribbble.com/shots/15118338-Cute-messaging-bot''')
-
-
 
 
 # Чат бот принимает файлы.
