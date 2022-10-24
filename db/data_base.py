@@ -29,7 +29,7 @@ def get_script_dir():
 
 def update_db(db, cursor, message):
     try:
-        bot.send_message(message.from_user.id, 'Большой брат следит за тобой!')  # Отладочное сообщение.
+        # bot.send_message(message.from_user.id, 'Большой брат следит за тобой!')  # Отладочное сообщение.
 
         user_id = message.from_user.id
         username = message.from_user.username
@@ -38,7 +38,8 @@ def update_db(db, cursor, message):
 
         check_for_user_id = cursor.execute('SELECT * FROM users WHERE user_id=?', (user_id,))
         if check_for_user_id.fetchone() is None:  # Делаем когда нету человека в бд
-            db_add_val(db, cursor, user_id=user_id, username=username, registration_date=registration_date, last_used=last_used)
+            db_add_val(db, cursor, user_id=user_id, username=username, registration_date=registration_date,
+                       last_used=last_used)
         else:  # Делаем когда есть человек в бд
             upd_last_used(db, cursor, username=username, last_used=last_used, user_id=user_id)
     except sqlite3.Error as i:
