@@ -1,5 +1,4 @@
 import sqlite3
-from ChatBotTelegram2PDF.start_bot import bot
 from datetime import datetime
 from os import path
 import os
