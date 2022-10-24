@@ -9,3 +9,4 @@
 TOKEN
 /tmp_files/
 db/**/*.db
+db/**/*.py
