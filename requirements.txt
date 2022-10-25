@@ -1,6 +1,12 @@
 pytelegrambotapi
+pip install pyTelegramBotAPI
 numpy
+pip install numpy
 opencv-python
+pip install opencv-python
 img2pdf
+pip install img2pdf
 pillow-heif
-pillow
+pip install pillow-heif
+fpdf
+pip install fpdf2
