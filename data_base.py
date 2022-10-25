@@ -54,17 +54,20 @@ def check_exist_folder():
 
 
 def check_exist_db():
-    if not os.path.exists(DB_FILE):
-        conn = sqlite3.connect(DB_FILE, check_same_thread=False)
-        cur = conn.cursor()
-        cur.execute("""CREATE TABLE IF NOT EXISTS users(
-        id integer PRIMARY KEY UNIQUE NOT NULL,
-        user_id integer UNIQUE NOT NULL,
-        username text NOT NULL,
-        registration_date text UNIQUE NOT NULL,
-        last_used text NOT NULL);""")
-        conn.commit()
-        conn.close()
+    try:
+        if not os.path.exists(DB_FILE):
+            conn = sqlite3.connect(DB_FILE, check_same_thread=False)
+            cur = conn.cursor()
+            cur.execute("""CREATE TABLE IF NOT EXISTS users(
+            id integer PRIMARY KEY UNIQUE NOT NULL,
+            user_id integer UNIQUE NOT NULL,
+            username text NOT NULL,
+            registration_date text UNIQUE NOT NULL,
+            last_used text NOT NULL);""")
+            conn.commit()
+            conn.close()
+    except Exception as e:
+        print('Failed to create %s. Reason: %s' % (SRC_DB, e))
 
 
 def connect_db(message):
