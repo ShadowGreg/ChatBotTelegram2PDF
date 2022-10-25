@@ -4,8 +4,6 @@ from os import path
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath(".."))  # Absolute path to DB.
-
 
 # Work with DB.
 def db_add_val(db, cursor, user_id: int, username: str, registration_date: str, last_used: str):
@@ -21,11 +19,6 @@ def upd_last_used(db, cursor, username: str, last_used: str, user_id: int):
     db.commit()
 
 
-def get_script_dir():
-    abs_path = path.abspath(__file__)  # полный путь к файлу скрипта
-    return path.dirname(abs_path)
-
-
 def update_db(db, cursor, message):
     try:
         # bot.send_message(message.from_user.id, 'Большой брат следит за тобой!')  # Отладочное сообщение.
@@ -35,12 +28,14 @@ def update_db(db, cursor, message):
         registration_date = str(datetime.today().strftime('%Y%m%d%H%M%S'))
         last_used = str(datetime.today().strftime('%Y%m%d%H%M%S'))
 
-        check_for_user_id = cursor.execute('SELECT * FROM users WHERE user_id=?', (user_id,))
+        check_for_user_id = cursor.execute(
+            'SELECT * FROM users WHERE user_id=?', (user_id,))
         if check_for_user_id.fetchone() is None:  # Делаем когда нету человека в бд
             db_add_val(db, cursor, user_id=user_id, username=username, registration_date=registration_date,
                        last_used=last_used)
         else:  # Делаем когда есть человек в бд
-            upd_last_used(db, cursor, username=username, last_used=last_used, user_id=user_id)
+            upd_last_used(db, cursor, username=username,
+                          last_used=last_used, user_id=user_id)
     except sqlite3.Error as i:
         print("Ошибка при работе с SQLite", i)
 
@@ -60,5 +55,6 @@ def connect_db(message):
         print("Соединение с SQLite закрыто")
 
 
+SRC_DB = './db/'
 DB_NAME = 'data_base.db'
-DB_FILE = get_script_dir() + path.sep + DB_NAME
+DB_FILE = SRC_DB + DB_NAME

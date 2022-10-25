@@ -8,5 +8,5 @@
 /.idea/vcs.xml
 TOKEN
 /tmp_files/
-# it works now! Comment db bellow to push db info the github
+/__pycache__
 /db/*.db
