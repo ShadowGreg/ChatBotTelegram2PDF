@@ -5,6 +5,11 @@ import os
 import sys
 
 
+SRC_DB = './db/'
+DB_NAME = 'data_base.db'
+DB_FILE = SRC_DB + DB_NAME
+
+
 # Work with DB.
 def db_add_val(db, cursor, user_id: int, username: str, registration_date: str, last_used: str):
     cursor.execute('INSERT INTO users (user_id, username, registration_date, last_used) VALUES (?, ?, ?, ?)',
@@ -40,10 +45,24 @@ def update_db(db, cursor, message):
         print("Ошибка при работе с SQLite", i)
 
 
-# To be done: hide output from user.
+def check_exist():
+    if not os.path.exists(DB_FILE):
+        os.makedirs(SRC_DB)
+        conn = sqlite3.connect(r'/db/data_base.db')
+        cur = conn.cursor()
+        cur.execute("""CREATE TABLE IF NOT EXISTS users(
+        id INT PRIMARY KEY UNIQUE NOT NULL,
+        user_id INT UNIQUE NOT NULL,
+        username TEXT NOT NULL,
+        registration_date TEXT UNIQUE NOT NULL)
+        last_used TEXT NOT NULL;
+        """)
+        conn.commit()
+
 
 def connect_db(message):
     try:
+        check_exist()
         db = sqlite3.connect(DB_FILE, check_same_thread=False)  # Connect DB.
         cursor = db.cursor()  # Create cursor for work with tables.
         update_db(db, cursor, message)
@@ -53,8 +72,3 @@ def connect_db(message):
         if db:
             cursor.close()
         print("Соединение с SQLite закрыто")
-
-
-SRC_DB = './db/'
-DB_NAME = 'data_base.db'
-DB_FILE = SRC_DB + DB_NAME
