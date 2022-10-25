@@ -59,7 +59,7 @@ def clear_src():
 # Чат бот принимает файлы.
 @bot.message_handler(content_types=['document'])
 def handle_docs(message):
-    """
+    """ 
     сохранение любого типа файла на компьютер в указанную директорию
     :type message: object
     """
