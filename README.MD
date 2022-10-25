@@ -55,7 +55,12 @@
 ## check-list
 [Check-list](https://docs.google.com/spreadsheets/d/1ZcLOYGYTrBpCamewE_iFhbuU2kZe5IdxOmcHBWc8Uxs/edit#gid=0)
 
-
+# TO DO
+1. изменить директории
+2. указать относительные пути
+3. проверять наличие БД, если нет, то создавать
+4. проверять наличие таблицы в БД, если нет, то создавать
+5. 
 
 
 
