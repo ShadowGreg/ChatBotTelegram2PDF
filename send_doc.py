@@ -1,6 +1,4 @@
 from start_bot import bot
-import os
-import sys
 import data_base
 
 

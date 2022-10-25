@@ -1,8 +1,6 @@
 import sqlite3
 from datetime import datetime
-from os import path
 import os
-import sys
 
 SRC_DB = './db/'
 DB_NAME = 'data_base.db'
