@@ -4,7 +4,6 @@ from os import path
 import os
 import sys
 
-
 SRC_DB = './db/'
 DB_NAME = 'data_base.db'
 DB_FILE = SRC_DB + DB_NAME
@@ -45,14 +44,6 @@ def update_db(db, cursor, message):
         print("Ошибка при работе с SQLite", i)
 
 
-def check_exist_folder():
-    try:
-        if not os.path.exists(SRC_DB):
-            os.makedirs(SRC_DB)
-    except Exception as e:
-        print('Failed to create %s. Reason: %s' % (SRC_DB, e))
-
-
 def check_exist_db():
     try:
         if not os.path.exists(DB_FILE):
@@ -72,7 +63,6 @@ def check_exist_db():
 
 def connect_db(message):
     try:
-        check_exist_folder()
         check_exist_db()
         db = sqlite3.connect(DB_FILE, check_same_thread=False)  # Connect DB.
         cursor = db.cursor()  # Create cursor for work with tables.
