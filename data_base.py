@@ -45,9 +45,16 @@ def update_db(db, cursor, message):
         print("Ошибка при работе с SQLite", i)
 
 
-def check_exist():
+def check_exist_folder():
+    try:
+        if not os.path.exists(SRC_DB):
+            os.makedirs(SRC_DB)
+    except Exception as e:
+        print('Failed to create %s. Reason: %s' % (SRC_DB, e))
+
+
+def check_exist_db():
     if not os.path.exists(DB_FILE):
-        os.makedirs(SRC_DB)
         conn = sqlite3.connect(r'/db/data_base.db')
         cur = conn.cursor()
         cur.execute("""CREATE TABLE IF NOT EXISTS users(
@@ -58,6 +65,11 @@ def check_exist():
         last_used TEXT NOT NULL;
         """)
         conn.commit()
+
+
+def check_exist():
+    check_exist_folder()
+    check_exist_db()
 
 
 def connect_db(message):
