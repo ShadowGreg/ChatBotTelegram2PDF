@@ -1,10 +1,14 @@
-from win32com import client
+import jpype
+import asposecells
+jpype.startJVM()
+from asposecells.api import Workbook, SaveFormat
 
 
 def excel_to_pdf(path_to_excel_file):
 
-    app = client.Dispatch("Excel.Application")
+    workbook = Workbook(path_to_excel_file)
 
-    book = app.Workbooks.Open(path_to_excel_file)
+    workbook.save("result.pdf", SaveFormat.PDF)
 
-    book.ExportAsFixedFormat(0, path_to_excel_file)
+    jpype.shutdownJVM()
+
