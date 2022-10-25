@@ -2,7 +2,7 @@ import sqlite3
 from datetime import datetime
 import os
 
-SRC_DB = './db/'
+SRC_DB = '../db/'
 DB_NAME = 'data_base.db'
 DB_FILE = SRC_DB + DB_NAME
 
