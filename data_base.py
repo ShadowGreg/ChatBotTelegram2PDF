@@ -45,16 +45,26 @@ def update_db(db, cursor, message):
 def check_exist_db():
     try:
         if not os.path.exists(DB_FILE):
-            conn = sqlite3.connect(DB_FILE, check_same_thread=False)
-            cur = conn.cursor()
-            cur.execute("""CREATE TABLE IF NOT EXISTS users(
-            id integer PRIMARY KEY UNIQUE NOT NULL,
-            user_id integer UNIQUE NOT NULL,
-            username text NOT NULL,
-            registration_date text UNIQUE NOT NULL,
-            last_used text NOT NULL);""")
-            conn.commit()
-            conn.close()
+            try:
+                os.makedirs(SRC_DB)
+                conn = sqlite3.connect(DB_FILE, check_same_thread=False)
+                print('successfully connected to created db')
+            except sqlite3.Error as e:
+                print('Connection error to created db', e)
+            finally:
+                cur = conn.cursor()
+                try:
+                    cur.execute("""CREATE TABLE IF NOT EXISTS users(
+                    id integer PRIMARY KEY UNIQUE NOT NULL,
+                    user_id integer UNIQUE NOT NULL,
+                    username text NOT NULL,
+                    registration_date text UNIQUE NOT NULL,
+                    last_used text NOT NULL);""")
+                except sqlite3.DatabaseError as e:
+                    print('Error creating table', e)
+                finally:
+                    conn.commit()
+                    conn.close()
     except Exception as e:
         print('Failed to create %s. Reason: %s' % (SRC_DB, e))
 
@@ -62,9 +72,14 @@ def check_exist_db():
 def connect_db(message):
     try:
         check_exist_db()
-        db = sqlite3.connect(DB_FILE, check_same_thread=False)  # Connect DB.
-        cursor = db.cursor()  # Create cursor for work with tables.
-        update_db(db, cursor, message)
+        try:
+            db = sqlite3.connect(DB_FILE, check_same_thread=False)  # Connect DB.
+            print('successfully connected to existing db')
+        except sqlite3.Error as e:
+            print('Connection error to existing db', e)
+        finally:
+            cursor = db.cursor()  # Create cursor for work with tables.
+            update_db(db, cursor, message)
     except sqlite3.Error as e:
         print("Ошибка при работе с SQLite", e)
     finally:  # закрыть соединение, когда все закончено.
