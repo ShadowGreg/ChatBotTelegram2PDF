@@ -1,8 +1,8 @@
-from win32com import client  # крос платворменные библиотеки
+#from win32com import client  # крос платворменные библиотеки
 from docx2pdf import convert
-import pythoncom
+#import pythoncom
 
-pythoncom.CoInitializeEx(0)
+#pythoncom.CoInitializeEx(0)
 
 
 def word_to_pdf(input_file_name):  # TODO сделать
