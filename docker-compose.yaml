@@ -1,0 +1,19 @@
+# версия docker-compose файла
+version: '3'
+
+# список сервисов
+services:
+    # у нас только один (назовем его app)
+    app:
+        # собираем образ с настройками по умолчанию (из Dockerfile) с текущей директории
+        build: .
+        stop_signal: SIGINT
+        # пробрасываем env vars из файла .env в контейнер
+        environment:
+            - TG_TOKEN
+        # перезапускаем контейнер если упал (раскоментить если нужно)
+        restart: always
+        volumes:
+            - ./db:/app/db
+            - ./config:/app/config
+            - ./tmp_files:/app/tmp_files
