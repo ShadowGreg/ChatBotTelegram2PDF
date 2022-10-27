@@ -4,3 +4,7 @@ opencv-python
 img2pdf
 pillow-heif
 pillow
+unoconv
+fpdf
+docx2pdf
+doc2pdf
