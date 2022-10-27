@@ -4,7 +4,7 @@ from bot.send_doc import send_document
 from start_bot import bot
 from bot.clear_catalog import clear_catalog
 from modules.txt_to_pdf import convert_text_pdf
-#from modules.excel_to_pdf import excel_to_pdf
+# from modules.excel_to_pdf import excel_to_pdf
 from modules.picture_to_pdf import img_2_pdf
 from datetime import datetime
 from modules import word_to_pdf
@@ -12,6 +12,7 @@ from bot import extension_list as hm
 
 local_src = ""
 SRC = './tmp_files/'
+
 
 # 2 реакции на команды для бота.
 @bot.message_handler(commands=['start', 'help', 'info'])  # tab-ы не трогать!
@@ -47,8 +48,6 @@ def send_welcome(message):
 Мы сделали этот проект для вас и для наших друзей и близких! Приятного использования 😇
 Картинка профиля бота - Cute messaging bot by DewApples
 https://dribbble.com/shots/15118338-Cute-messaging-bot''')
-
-
 
 
 # Чат бот принимает файлы.
