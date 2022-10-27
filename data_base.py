@@ -1,11 +1,11 @@
 import sqlite3
-from ChatBotTelegram2PDF.start_bot import bot
+from start_bot import bot
 from datetime import datetime
 from os import path
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath(".."))  # Absolute path to DB.
+sys.path.insert(0, os.path.abspath(""))  # Absolute path to DB.
 
 
 # Work with DB.
