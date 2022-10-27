@@ -11,7 +11,7 @@ RUN set -ex ;\
 # копирование файла зависимостей
 COPY req.txt .
 # установка зависимостей через pip
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r req.txt
 # копирование скриптов
 COPY *.py ./
 # запуск скрипта при запуске контейнера
