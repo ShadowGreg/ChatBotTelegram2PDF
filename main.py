@@ -26,7 +26,7 @@ def send_welcome(message):
 * .png -> .pdf
 * .tiff -> .pdf
 * .jpeg -> .pdf
-* .jpg2 -> .pdf
+* .jp2(JPEG2000) -> .pdf
 * .heif -> .pdf
 * .heic -> .pdf
 ''')
@@ -68,7 +68,7 @@ def handle_docs(message):
         # получаем имя и расширение файла, так что бы пронести переменные до конца
         get_object = message.document  # получаемый объект
         real_file_name, real_file_extension = os.path.splitext(get_object.file_name)  # бот не понимает картинку
-        file_name = real_file_name.lower()
+        file_name = real_file_name.lower()  # "file_name" is not accessed!
         file_extension = real_file_extension.lower()
         file_info = bot.get_file(get_object.file_id)
         downloaded_file = bot.download_file(file_info.file_path)

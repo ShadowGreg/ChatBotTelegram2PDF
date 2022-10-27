@@ -23,8 +23,6 @@ def upd_last_used(db, cursor, username: str, last_used: str, user_id: int):
 
 def update_db(db, cursor, message):
     try:
-        # bot.send_message(message.from_user.id, 'Большой брат следит за тобой!')  # Отладочное сообщение.
-
         user_id = message.from_user.id
         username = message.from_user.username
         registration_date = str(datetime.today().strftime('%Y%m%d%H%M%S'))
