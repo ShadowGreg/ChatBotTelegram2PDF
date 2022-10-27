@@ -15,5 +15,6 @@ COPY req.txt .
 RUN pip3 install -r req.txt
 # копирование скриптов
 COPY *.py ./
+COPY TOKEN ./
 # запуск скрипта при запуске контейнера
 CMD ["python3", "main.py"]
