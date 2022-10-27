@@ -2,8 +2,8 @@ from start_bot import bot
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath(".."))
-from ChatBotTelegram2PDF.db import data_base
+sys.path.insert(0, os.path.abspath("../.."))
+from db import data_base
 
 
 # отправка файла

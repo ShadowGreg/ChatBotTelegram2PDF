@@ -1,14 +1,14 @@
 import os
 import os.path
-from send_doc import send_document
+from bot.send_doc import send_document
 from start_bot import bot
-from clear_catalog import clear_catalog
-from txt_to_pdf import convert_text_pdf
-#from excel_to_pdf import excel_to_pdf
-from picture_to_pdf import img_2_pdf
+from bot.clear_catalog import clear_catalog
+from modules.txt_to_pdf import convert_text_pdf
+#from modules.excel_to_pdf import excel_to_pdf
+from modules.picture_to_pdf import img_2_pdf
 from datetime import datetime
-import word_to_pdf
-import extension_list as hm
+from modules import word_to_pdf
+from bot import extension_list as hm
 
 local_src = ""
 SRC = './tmp_files/'

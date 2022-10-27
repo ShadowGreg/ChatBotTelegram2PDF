@@ -1,10 +1,10 @@
 import os
 from datetime import datetime
 
-from ChatBotTelegram2PDF.clear_catalog import clear_catalog
+from bot.clear_catalog import clear_catalog
 
 SRC = './tmp_files/'
-clear_time = '142700'
+clear_time = '142710'
 
 
 # чистка папки назначения
@@ -14,6 +14,7 @@ def clear_src():
         os.makedirs(SRC)
 
 
+# скрипт запускается отдельно что бы чистить каталог в случае ошибок и выпадания основной программы
 while 5 < 6:
     if datetime.now().strftime("%H%M%S") == clear_time:
         clear_src()

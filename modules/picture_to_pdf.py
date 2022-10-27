@@ -7,7 +7,7 @@ from start_bot import bot
 import numpy as np
 # pip install opencv-python
 import cv2
-import extension_list as hm
+from bot import extension_list as hm
 
 """"
 что бы вставить в условия файла main - надо проверить файл на расширения

@@ -6,5 +6,5 @@
 /.idea/modules.xml
 /.idea/TextToPDF.iml
 /.idea/vcs.xml
-TOKEN
+TOKEN.env
 /tmp_files/
