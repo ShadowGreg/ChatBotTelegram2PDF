@@ -102,7 +102,7 @@ def file_switcher(chat_id, file_extension, local_src, message, src):
         bot.reply_to(message, f"Конвертирую {file_extension} в PDF ⚙️⚙")
         send_document(word_to_pdf.word_to_pdf(local_src))
         # bot.reply_to(message, "doc")
-    elif file_extension in hm.img_ext:  # картинок
+    elif file_extension in hm.img_ext or hm.img_ext_ios:  # картинок
         # отсылаем файл пользователю (используем модуль конвертера)
         conversion_message(message)
         img_2_pdf(local_src)

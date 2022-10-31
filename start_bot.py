@@ -12,4 +12,4 @@ def add_token(path):
     return token
 
 
-bot = telebot.TeleBot(add_token('TOKEN'))
+bot = telebot.TeleBot(add_token('TOKEN.env'))
