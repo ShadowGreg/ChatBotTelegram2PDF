@@ -10,3 +10,4 @@ TOKEN
 /tmp_files/
 /__pycache__
 /db/*.db
+TOKEN.env
