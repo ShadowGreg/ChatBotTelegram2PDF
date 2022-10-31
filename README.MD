@@ -51,7 +51,8 @@ review branch
 # 6. лог файл ошибок
 
 придумать лог файл ошибок - будет ли он работать удалённо? 
-
-
+# 7. тестирование
+## check-list
+[Check-list](https://docs.google.com/spreadsheets/d/1ZcLOYGYTrBpCamewE_iFhbuU2kZe5IdxOmcHBWc8Uxs/edit#gid=0)
 
 

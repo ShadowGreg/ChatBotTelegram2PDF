@@ -8,3 +8,5 @@
 /.idea/vcs.xml
 TOKEN
 /tmp_files/
+/__pycache__
+/db/*.db

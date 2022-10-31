@@ -1,11 +1,8 @@
-import os
 import os.path
-#import pythoncom
 from send_doc import send_document
 from start_bot import bot
 from clear_catalog import clear_catalog
 from txt_to_pdf import convert_text_pdf
-#from excel_to_pdf import excel_to_pdf
 from picture_to_pdf import img_2_pdf
 from datetime import datetime
 import word_to_pdf
@@ -13,6 +10,7 @@ import hm
 
 local_src = ""
 SRC = './tmp_files/'
+clear_time = '14'
 
 
 # 2 реакции на команды для бота.
@@ -23,13 +21,12 @@ def send_welcome(message):
 Поддерживаемые кодировки текста: ANSI, UTF-8
 * .txt -> .pdf
 
-Конвертирует фото, отправленные как файл.
-Нажмите скрепку -> снизу в списке выберите "Файл" -> выберите фото
+Поддерживаемые форматы фото:
 * .jpg -> .pdf
 * .png -> .pdf
 * .tiff -> .pdf
 * .jpeg -> .pdf
-* .jpg2 -> .pdf
+* .jp2(JPEG2000) -> .pdf
 * .heif -> .pdf
 * .heic -> .pdf
 ''')
@@ -41,12 +38,22 @@ def send_welcome(message):
 Создан исключительно на энтузиазме и любви к разработке.\n
 Бот принимает файл, конвертирует его в PDF и отправляет обратно пользователю.
 После чего удаляет ваш файл с сервера и очищает директорию.
+Бот не собирает никакие данные о пользователе и не сохраняет никакую информацию.
+Статистика работы и обработки сценариев не ведется.
 Мы уважаем конфиденциальность информации пользователей и поддерживаем политику telegram в отношении приватности.\n
-Если вам нравится converToPDF и вы хотите выразить благодарность за нашу работу, то можете отправить нам на кофе ☕
-Поддержите проект на https://boosty.to/convertopdf. Спасибо!
+Если вам нравится converToPDF и вы хотите подкинуть нам денег на кофе ☕
+То поддержите проект, отправив на (реквизиты) произвольную сумму в рублях.
 Мы сделали этот проект для вас и для наших друзей и близких! Приятного использования 😇
-Картинка профиля бота - Love Death + Robots: K-VRC by César Castro
+Avatar by César Castro on dribbble
 https://dribbble.com/shots/18423562-Love-Death-Robots-K-VRC''')
+
+
+# чистка папки назначения
+def clear_src():
+    if datetime.now().strftime("%H") == clear_time:
+        clear_catalog(SRC)
+        if not os.path.exists(SRC):
+            os.makedirs(SRC)
 
 
 # Чат бот принимает файлы.
@@ -61,7 +68,7 @@ def handle_docs(message):
         # получаем имя и расширение файла, так что бы пронести переменные до конца
         get_object = message.document  # получаемый объект
         real_file_name, real_file_extension = os.path.splitext(get_object.file_name)  # бот не понимает картинку
-        file_name = real_file_name.lower()
+        file_name = real_file_name.lower()  # "file_name" is not accessed!
         file_extension = real_file_extension.lower()
         file_info = bot.get_file(get_object.file_id)
         downloaded_file = bot.download_file(file_info.file_path)
@@ -84,6 +91,7 @@ def conversion_message(message):  # Сообщение пользователю,
 
 
 def file_switcher(chat_id, file_extension, local_src, message, src):
+    clear_src()
     if file_extension == '.txt':  # проверяем расширение txt
         conversion_message(message)
         convert_text_pdf(local_src)
