@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-from ChatBotTelegram2PDF.clear_catalog import clear_catalog
+from clear_catalog import clear_catalog
 
 SRC = './tmp_files/'
 clear_time = '142700'
@@ -14,6 +14,7 @@ def clear_src():
         os.makedirs(SRC)
 
 
-while 5 < 6:
-    if datetime.now().strftime("%H%M%S") == clear_time:
-        clear_src()
+def run_clear():
+    while 5 < 6:
+        if datetime.now().strftime("%H%M%S") == clear_time:
+            clear_src()
