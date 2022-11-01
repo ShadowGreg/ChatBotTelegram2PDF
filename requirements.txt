@@ -1,8 +1,10 @@
 pytelegrambotapi
-numpy
-opencv-python
-img2pdf
+numpy~=1.23.4
+opencv-python~=4.6.0.66
+img2pdf~=0.4.4
 pillow-heif
-pillow
+pillow~=9.2.0
 unoconv
-fpdf
+fpdf~=1.7.2
+jpype
+docx2pdf~=0.1.8
