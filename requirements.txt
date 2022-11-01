@@ -6,5 +6,6 @@ pillow-heif
 pillow~=9.2.0
 unoconv
 fpdf~=1.7.2
-jpype
+JPype1
 docx2pdf~=0.1.8
+asposecells
