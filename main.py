@@ -5,6 +5,7 @@ from clear_catalog import clear_catalog
 from txt_to_pdf import convert_text_pdf
 from picture_to_pdf import img_2_pdf
 from datetime import datetime
+from excel_to_pdf import excel_to_pdf
 import word_to_pdf
 import hm
 
@@ -97,11 +98,9 @@ def file_switcher(chat_id, file_extension, local_src, message, src):
         convert_text_pdf(local_src)
         send_document(convert_text_pdf(local_src), chat_id, message)
     elif file_extension in hm.xls_ext:  # проверяем расширение excel
-        bot.reply_to(message, "xls")
+        send_document(excel_to_pdf(local_src), chat_id, message)
     elif file_extension in hm.doc_ext:  # проверяем расширение doc
-        bot.reply_to(message, f"Конвертирую {file_extension} в PDF ⚙️⚙")
-        send_document(word_to_pdf.word_to_pdf(local_src))
-        # bot.reply_to(message, "doc")
+        bot.reply_to(message, "doc")
     elif file_extension in hm.img_ext or hm.img_ext_ios:  # картинок
         # отсылаем файл пользователю (используем модуль конвертера)
         conversion_message(message)
