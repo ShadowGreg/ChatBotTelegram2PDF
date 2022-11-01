@@ -6,7 +6,6 @@ from txt_to_pdf import convert_text_pdf
 from picture_to_pdf import img_2_pdf
 from datetime import datetime
 from excel_to_pdf import excel_to_pdf
-from ClearCatalog import run_clear
 import word_to_pdf
 import hm
 
@@ -48,9 +47,6 @@ def send_welcome(message):
 Мы сделали этот проект для вас и для наших друзей и близких! Приятного использования 😇
 Avatar by César Castro on dribbble
 https://dribbble.com/shots/18423562-Love-Death-Robots-K-VRC''')
-
-
-run_clear()
 
 
 # чистка папки назначения
