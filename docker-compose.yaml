@@ -9,8 +9,8 @@ services:
         build: .
         stop_signal: SIGINT
         # пробрасываем env vars из файла .env в контейнер
-        #environment:
-        #    - TG_TOKEN
+        environment:
+            TG_TOKEN: ${TG_TOKEN}
         # перезапускаем контейнер если упал (раскоментить если нужно)
         restart: always
         volumes:

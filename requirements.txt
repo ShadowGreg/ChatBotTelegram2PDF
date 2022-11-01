@@ -8,4 +8,4 @@ unoconv
 fpdf~=1.7.2
 JPype1
 docx2pdf~=0.1.8
-asposecells
+aspose-cells
