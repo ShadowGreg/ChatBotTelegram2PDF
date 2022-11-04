@@ -27,10 +27,12 @@ def send_welcome(message):
 * .png -> .pdf
 * .tiff -> .pdf
 * .jpeg -> .pdf
-* .jp2(JPEG2000) -> .pdf
-* .heif -> .pdf
-* .heic -> .pdf
-''')
+
+Поддерживаемые форматы документов:
+* .xls -> .pdf
+* .xlsx -> .pdf
+* .csv -> .pdf
+''')  # heic, heif, jp2 - hidden
     elif message.text == '/start':
         bot.reply_to(message, '''Этот бот конвертирует файлы с различными расширениями в pdf.\n
 Чтобы посмотреть список поддерживаемых конверсий используйте /help''')
