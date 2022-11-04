@@ -44,9 +44,14 @@ def check_exist_db():
     try:
         if not os.path.exists(DB_FILE):
             try:
-                os.makedirs(SRC_DB)
-                conn = sqlite3.connect(DB_FILE, check_same_thread=False)
-                print('successfully connected to created db')
+                try:
+                    conn = sqlite3.connect(DB_FILE, check_same_thread=False)
+                except sqlite3.Error as e:
+                    print('cannot create table inside db', e)
+                finally:
+                    os.makedirs(SRC_DB)
+                    conn = sqlite3.connect(DB_FILE, check_same_thread=False)
+                    print('successfully connected to created db')
             except sqlite3.Error as e:
                 print('Connection error to created db', e)
             finally:
