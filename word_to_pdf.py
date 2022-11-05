@@ -1,12 +1,31 @@
-#from win32com import client  # крос платворменные библиотеки
-from docx2pdf import convert
-#import pythoncom
-
-#pythoncom.CoInitializeEx(0)
+import re
+import subprocess
 
 
-def word_to_pdf(input_file_name):  # TODO сделать
-    doc2pdf_filename = convert(input_file_name)
-    # convert("my_docx_folder/")
-    print(input_file_name)
-    return doc2pdf_filename
+def excel_to_pdf(doc_path, path):
+    subprocess.call(['soffice',
+                 '--headless',
+                 '--nologo',
+                 '--nofirststartwizard',
+                 '--norestore',
+                 doc_path,
+                 'macro:///Standard.Module1.FitToPage'])    
+    subprocess.call(['soffice',
+                 # '--headless',
+                 '--convert-to',
+                 'pdf',
+                 '--outdir',
+                 path,
+                 doc_path])    
+    return re.sub(r'xls.?$', "pdf", doc_path, flags=re.IGNORECASE)
+
+
+def word_to_pdf(doc_path, path):
+    subprocess.call(['soffice',
+                 # '--headless',
+                 '--convert-to',
+                 'pdf',
+                 '--outdir',
+                 path,
+                 doc_path])    
+    return re.sub(r'doc.?$', "pdf", doc_path, flags=re.IGNORECASE)
