@@ -54,7 +54,8 @@ review branch
 # 7. тестирование
 ## check-list
 [Check-list](https://docs.google.com/spreadsheets/d/1ZcLOYGYTrBpCamewE_iFhbuU2kZe5IdxOmcHBWc8Uxs/edit#gid=0)
-
+[Test-case](https://docs.google.com/spreadsheets/d/19h1TB17okxnLFUyHEFo-gz6UHo6KxqOPkCEGG6uuUhU/edit#gid=0)
+[Bug-report](https://docs.google.com/spreadsheets/d/1ABlBFz24blIro0BknKbnu0hd2y6mfEg8Rq1SWBTcpdg/edit#gid=0)
 
 Ты Module1.xba закидываешь в свою папку, но по пути из Dockerfile. 
 Т.е. в твоем случае надо его положить в /home/alex/.config/libreoffice/4/user/basic/Standard/
