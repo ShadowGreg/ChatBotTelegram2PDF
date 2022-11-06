@@ -56,3 +56,6 @@ review branch
 [Check-list](https://docs.google.com/spreadsheets/d/1ZcLOYGYTrBpCamewE_iFhbuU2kZe5IdxOmcHBWc8Uxs/edit#gid=0)
 
 
+Ты Module1.xba закидываешь в свою папку, но по пути из Dockerfile. 
+Т.е. в твоем случае надо его положить в /home/alex/.config/libreoffice/4/user/basic/Standard/
+
