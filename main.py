@@ -7,7 +7,7 @@ from picture_to_pdf import img_2_pdf
 from datetime import datetime
 # from excel_to_pdf import excel_to_pdf
 from word_to_pdf import word_to_pdf, excel_to_pdf
-# import word_to_pdf
+from csv_to_pdf import csv_to_pdf
 import hm
 
 local_src = ""
@@ -98,6 +98,8 @@ def file_switcher(chat_id, file_extension, local_src, message, src):
         conversion_message(message)
         convert_text_pdf(local_src)
         send_document(convert_text_pdf(local_src), chat_id, message)
+    elif file_extension == '.csv':
+        send_document(csv_to_pdf(local_src), chat_id, message)
     elif file_extension in hm.xls_ext:  # проверяем расширение excel
         # send_document(excel_to_pdf(local_src), chat_id, message)
         send_document(excel_to_pdf(local_src, src), chat_id, message)

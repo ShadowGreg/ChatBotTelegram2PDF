@@ -6,7 +6,7 @@ WORKDIR /app
 RUN set -ex ;\
     apt-get update ;\
     apt-get install -y --no-install-recommends python3-pip libgl1 openjdk-11-jre unoconv fonts-nanum \
-    libreoffice-calc libreoffice-writer libreoffice-java-common;\
+    libreoffice-calc libreoffice-writer libreoffice-java-common wkhtmltopdf;\
     # apt-get install -y --no-install-recommends python3-pip libgl1 openjdk-11-jre unoconv libreoffice-calc libreoffice-writer;\
     # apt-get install -y  fonts-nanum;\
     apt-get clean && rm -rf /var/lib/apt/lists/* \
