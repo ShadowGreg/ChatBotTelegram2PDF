@@ -1,4 +1,4 @@
 img_ext = {'.jpg', '.jpeg', '.jpg2', '.png', '.tiff'}
 img_ext_ios = {'.heif', '.heic'}
-doc_ext = {'.doc', '.docx'}
-xls_ext = {'.xls', '.xlsx'}
+doc_ext = {'.doc', '.docx', '.odt'}
+xls_ext = {'.xls', '.xlsx', '.ods'}

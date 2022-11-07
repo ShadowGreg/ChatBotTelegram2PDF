@@ -94,8 +94,8 @@ def conversion_message(message):  # Сообщение пользователю,
 
 def file_switcher(chat_id, file_extension, local_src, message, src):
     clear_src()
+    conversion_message(message)
     if file_extension == '.txt':  # проверяем расширение txt
-        conversion_message(message)
         convert_text_pdf(local_src)
         send_document(convert_text_pdf(local_src), chat_id, message)
     elif file_extension == '.csv':
@@ -109,7 +109,6 @@ def file_switcher(chat_id, file_extension, local_src, message, src):
         # bot.reply_to(message, "doc")
     elif file_extension in hm.img_ext or hm.img_ext_ios:  # картинок
         # отсылаем файл пользователю (используем модуль конвертера)
-        conversion_message(message)
         img_2_pdf(local_src)
         send_document(img_2_pdf(local_src), chat_id, message)
     else:
