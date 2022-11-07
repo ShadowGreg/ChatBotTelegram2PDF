@@ -2,6 +2,7 @@
 FROM debian:bullseye-slim
 # установка рабочей директории (по умолчанию) в образе
 WORKDIR /app
+ARG project_path=./convert2pdf
 # ставим unoconv
 RUN set -ex ;\
     apt-get update ;\
@@ -12,16 +13,16 @@ RUN set -ex ;\
     apt-get clean && rm -rf /var/lib/apt/lists/* \
     touch TOKEN.env
 # копирование файла зависимостей
-COPY requirements.txt .
+COPY $project_path/requirements.txt .
 # установка зависимостей через pip
 RUN pip3 install -r requirements.txt
 # копирование скриптов
-COPY *.py ./
+COPY $project_path/*.py ./
 
 # Change macros file
 RUN soffice --headless --nologo --nofirststartwizard --norestore 1.xlsx macro:///Standard.Module1.FitToPage
 RUN rm -f /root/.config/libreoffice/4/user/basic/Standard/Module1.xba
-COPY *.xba /root/.config/libreoffice/4/user/basic/Standard/
+COPY $project_path/*.xba /root/.config/libreoffice/4/user/basic/Standard/
 
 # COPY TOKEN.env ./
 # запуск скрипта при запуске контейнера

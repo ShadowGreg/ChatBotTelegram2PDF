@@ -1,5 +1,5 @@
 ### This Project Gigignore ###
-TOKEN*
+*TOKEN*
 tmp_files/
 db/*.db
 
