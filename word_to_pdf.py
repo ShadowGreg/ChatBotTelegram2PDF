@@ -17,7 +17,7 @@ def excel_to_pdf(doc_path, path):
                  '--outdir',
                  path,
                  doc_path])    
-    return re.sub(r'xls.?$', "pdf", doc_path, flags=re.IGNORECASE)
+    return re.sub(r'xls.?|csv$', "pdf", doc_path, flags=re.IGNORECASE)
 
 
 def word_to_pdf(doc_path, path):

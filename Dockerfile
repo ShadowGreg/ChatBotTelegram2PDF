@@ -17,12 +17,12 @@ COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 # копирование скриптов
 COPY *.py ./
-COPY *.xba ./
 
 # Change macros file
+RUN soffice --headless --nologo --nofirststartwizard --norestore 1.xlsx macro:///Standard.Module1.FitToPage
 RUN rm -f /root/.config/libreoffice/4/user/basic/Standard/Module1.xba
 COPY *.xba /root/.config/libreoffice/4/user/basic/Standard/
-#                /.config/libreoffice/4/user/basic/Standard
+
 # COPY TOKEN.env ./
 # запуск скрипта при запуске контейнера
 ENTRYPOINT ["python3", "main.py"]
