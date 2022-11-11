@@ -9,14 +9,6 @@ def clear_catalog(folder):
     shutil.rmtree(folder, ignore_errors=True)
 
 
-# чистка папки назначения
-# def clear_src():
-#     if datetime.now().strftime("%H") == clear_time:
-#         clear_catalog(SRC)
-#         if not os.path.exists(SRC):
-#             os.makedirs(SRC)    
-
-
 def file_save(chat_id, file_name, file):
     cur_datetime = datetime.today().strftime('%Y%m%d%H%M%S')
     path = os.path.join(SRC, f"{chat_id}_{cur_datetime}")
