@@ -21,6 +21,9 @@ TXT_EXT = {'.txt', '.csv'}
 def get_pdf_path(doc_path):
     return re.sub(r'\.[^.]*$', ".pdf", doc_path, flags=re.IGNORECASE)
 
+def get_png_path(doc_path):
+    return re.sub(r'\.[^.]*$', ".png", doc_path, flags=re.IGNORECASE)
+
 
 def get_html_path(doc_path):
     return re.sub(r'\.[^.]*$', ".html", doc_path, flags=re.IGNORECASE)
@@ -67,11 +70,11 @@ def ios_img_to_png(doc_path: str):
     heif_file = pillow_heif.open_heif(doc_path, convert_hdr_to_8bit=False)
     heif_file.convert_to("BGRA;16" if heif_file.has_alpha else "BGR;16")
     np_array = np.asarray(heif_file)
-    pdf_path = get_pdf_path(doc_path)
-    # img_path = do_pdf_path(input_ios_src, '.jpg')
-    cv2.imwrite(pdf_path, np_array)
+    # pdf_path = get_pdf_path(doc_path)
+    img_path = get_png_path(doc_path)
+    cv2.imwrite(img_path, np_array)
     np.allclose
-    output_src = img_to_pdf(pdf_path)
+    output_src = img_to_pdf(img_path)
     # except Exception as e:
         # ловим ошибку и даем её боту
         # bot.reply_to(e)
