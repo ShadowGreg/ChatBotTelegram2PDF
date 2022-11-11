@@ -11,7 +11,7 @@ import pdfkit
 import messages as m
 
 
-IMG_EXT = {'.jpg', '.jpeg', '.jpg2', '.png', '.tiff'}
+IMG_EXT = {'.jpg', '.jpeg', '.jp2', '.png', '.tiff'}
 IMG_EXT_IOS = {'.heif', '.heic'}
 DOC_EXT = {'.doc', '.docx', '.odt'}
 XLS_EXT = {'.xls', '.xlsx', '.ods'}
