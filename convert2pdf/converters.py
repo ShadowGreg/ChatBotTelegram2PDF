@@ -21,6 +21,7 @@ TXT_EXT = {'.txt', '.csv'}
 def get_pdf_path(doc_path):
     return re.sub(r'\.[^.]*$', ".pdf", doc_path, flags=re.IGNORECASE)
 
+
 def get_png_path(doc_path):
     return re.sub(r'\.[^.]*$', ".png", doc_path, flags=re.IGNORECASE)
 
