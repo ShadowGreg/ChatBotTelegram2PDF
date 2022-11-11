@@ -67,14 +67,10 @@ def ios_img_to_png(doc_path: str):
     heif_file = pillow_heif.open_heif(doc_path, convert_hdr_to_8bit=False)
     heif_file.convert_to("BGRA;16" if heif_file.has_alpha else "BGR;16")
     np_array = np.asarray(heif_file)
-    pdf_path = get_pdf_path(doc_path)
-    # img_path = do_pdf_path(input_ios_src, '.jpg')
-    cv2.imwrite(pdf_path, np_array)
+    png_path = re.sub(r'\.[^.]*$', ".png", doc_path, flags=re.IGNORECASE)
+    cv2.imwrite(png_path, np_array)
     np.allclose
-    output_src = img_to_pdf(pdf_path)
-    # except Exception as e:
-        # ловим ошибку и даем её боту
-        # bot.reply_to(e)
+    output_src = img_to_pdf(png_path)
     return output_src
 
 
