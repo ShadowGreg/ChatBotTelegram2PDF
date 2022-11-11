@@ -21,6 +21,7 @@ TXT_EXT = {'.txt', '.csv'}
 def get_pdf_path(doc_path):
     return re.sub(r'\.[^.]*$', ".pdf", doc_path, flags=re.IGNORECASE)
 
+
 def get_png_path(doc_path):
     return re.sub(r'\.[^.]*$', ".png", doc_path, flags=re.IGNORECASE)
 
@@ -70,8 +71,12 @@ def ios_img_to_pdf(doc_path: str):
     heif_file.convert_to("BGRA;16" if heif_file.has_alpha else "BGR;16")
     np_array = np.asarray(heif_file)
     png_path = get_png_path(doc_path)
-    cv2.imwrite(png_path, np_array)
-    np.allclose
+    _, width, _ = np_array.shape
+    fine_width_size = 1200
+    if width > fine_width_size:
+        scale = fine_width_size / width
+        img = cv2.resize(np_array, (0, 0), fx=scale, fy=scale) 
+    cv2.imwrite(png_path, img)
     output_src = img_to_pdf(png_path)
     return output_src
 

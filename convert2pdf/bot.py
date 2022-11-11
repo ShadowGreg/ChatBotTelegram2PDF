@@ -4,6 +4,9 @@ import os
 from utils import file_save, clear_catalog
 import converters as c
 import messages as m
+import logging
+
+LOG_LEVEL = logging.DEBUG
 
 
 # Чтение токена. Для того что бы работало надо в папке хранения исполняемого файла создать файл
@@ -58,6 +61,7 @@ def handle_docs(message):
             data_base.connect_db(message)
         clear_catalog(os.path.dirname(full_file_name))
     except Exception as e:
+        logging.warning(e)
         bot.reply_to(message, e)
 
 
@@ -78,6 +82,7 @@ def photo(message):
             data_base.connect_db(message)
         clear_catalog(os.path.dirname(full_file_name))
     except Exception as e:
+        logging.warning(e)
         bot.reply_to(message, e)
 
 
@@ -111,4 +116,5 @@ def file_switcher(full_file_name, message):
 
 
 def start_bot():
+    logging.basicConfig(filename='./convert2pdf.log', encoding='utf-8', level=LOG_LEVEL, format='%(asctime)s %(message)s')
     bot.polling(none_stop=True, interval=0)
