@@ -101,7 +101,7 @@ def file_switcher(full_file_name, message):
     elif file_extension in c.IMG_EXT: # проверяем расширения картинок
         return c.img_to_pdf(full_file_name)
     elif file_extension in c.IMG_EXT_IOS: # проверяем расширения картинок IOS
-        return c.ios_img_to_png(full_file_name)
+        return c.ios_img_to_pdf(full_file_name)
     elif file_extension in c.XLS_EXT:  # проверяем расширения excel
         return c.excel_to_pdf(full_file_name, doc_path)
     elif file_extension in c.DOC_EXT:  # проверяем расширения doc

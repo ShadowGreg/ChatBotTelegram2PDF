@@ -57,10 +57,18 @@ review branch
 
 
 # 8. Запуск в контейнере
-Для запуска приложения в докере необходимо установить docker-compose:
-apt update
-apt install docker-compose
+Для запуска приложения в докере необходимо установить docker-compose:  
+``` shell
+apt update  
+apt install docker-compose  
+```
 
 Далее нужно скопировать файл .env_example в .env и вписать туда токен своего бота.
-Далее с помощью docker-compose собираем образ и запускаем контейнер:
-docker-compose up --build
+```
+TG_TOKEN=PLACE_YOUR_TOKEN_HERE
+```
+
+Далее с помощью docker-compose собираем образ и запускаем контейнер:  
+``` shell
+docker-compose up --build  
+```
