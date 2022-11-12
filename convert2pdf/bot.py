@@ -15,7 +15,7 @@ def add_token(path='TOKEN.env'):
     bot_token_env = os.environ.get('TG_TOKEN', None)
     if bot_token_env:
         return bot_token_env
-    
+
     try:
         with open(path, 'r') as f:
             token = f.read().rstrip()
@@ -29,7 +29,7 @@ bot = telebot.TeleBot(add_token())
 
 
 # Сообщение пользователю, что бот приступил к конверсии файла.
-def conversion_message(message):  
+def conversion_message(message):
     bot.reply_to(message, m.CONVERT_MESSAGE)
 
 
@@ -100,12 +100,12 @@ def file_switcher(full_file_name, message):
 
     doc_path, base_name = os.path.split(full_file_name)
     _, file_extension = os.path.splitext(base_name)
-    
+
     if file_extension in c.TXT_EXT:  # проверяем расширения txt/csv
         return c.txt_to_pdf(full_file_name)
-    elif file_extension in c.IMG_EXT: # проверяем расширения картинок
+    elif file_extension in c.IMG_EXT:  # проверяем расширения картинок
         return c.img_to_pdf(full_file_name)
-    elif file_extension in c.IMG_EXT_IOS: # проверяем расширения картинок IOS
+    elif file_extension in c.IMG_EXT_IOS:  # проверяем расширения картинок IOS
         return c.ios_img_to_pdf(full_file_name)
     elif file_extension in c.XLS_EXT:  # проверяем расширения excel
         return c.excel_to_pdf(full_file_name, doc_path)
@@ -116,5 +116,6 @@ def file_switcher(full_file_name, message):
 
 
 def start_bot():
-    logging.basicConfig(filename='./convert2pdf.log', encoding='utf-8', level=LOG_LEVEL, format='%(asctime)s %(message)s')
+    logging.basicConfig(filename='./convert2pdf.log', encoding='utf-8', level=LOG_LEVEL,
+                        format='%(asctime)s %(message)s')
     bot.polling(none_stop=True, interval=0)
