@@ -66,3 +66,9 @@ TG_TOKEN=PLACE_YOUR_TOKEN_HERE
 ``` shell
 docker-compose up --build  
 ```
+
+При наличии ошибки на отсутствие доступа, добавить текущего пользователя в группу docker:  
+``` shell
+sudo gpasswd -a $USER docker
+newgrp docker  
+```
