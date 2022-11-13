@@ -112,7 +112,8 @@ def file_switcher(full_file_name, message):
     elif file_extension in c.DOC_EXT:  # проверяем расширения doc
         return c.word_to_pdf(full_file_name, doc_path)
     else:
-        bot.reply_to(message, f"я не знаю такого '{file_extension}' формата 😇 /help - поддерживаемые форматы")
+        text = m.UNSUPPORTED_MESSAGE  # {file_extension} еще бы добавить в сообщение
+        bot.reply_to(message, text)
 
 
 def start_bot():
