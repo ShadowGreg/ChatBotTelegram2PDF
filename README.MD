@@ -72,7 +72,7 @@ docker-compose up --build
 sudo gpasswd -a $USER docker
 newgrp docker  
 ```
-sudo chown -R alex:alex *
+
 Для возможности редактирования и удаления файлов в корневой папке проекта выполнить:  
 ``` shell
 sudo chown -R alex:alex *
