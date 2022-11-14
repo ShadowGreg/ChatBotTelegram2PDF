@@ -87,6 +87,7 @@ def ios_img_to_pdf(doc_path: str):
     png_path = get_png_path(doc_path)
     _, width, _ = np_array.shape
     fine_width_size = 1200
+    img = np_array
     if width > fine_width_size:
         scale = fine_width_size / width
         img = cv2.resize(np_array, (0, 0), fx=scale, fy=scale) 
