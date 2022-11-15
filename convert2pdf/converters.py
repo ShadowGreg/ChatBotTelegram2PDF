@@ -37,8 +37,7 @@ def get_encoding(doc_path):
     default_enc = 'utf-8'
     with open(doc_path, 'rb') as f:
         enc = chardet.detect(f.readline()).get('encoding', default_enc)
-        print(enc)
-        if default_enc in enc.lower():
+        if not enc or default_enc in enc.lower():
             return default_enc
         return enc
 
