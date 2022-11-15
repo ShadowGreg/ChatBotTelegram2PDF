@@ -1,4 +1,5 @@
 from PIL import Image
+from string import Template
 import pillow_heif
 import numpy as np
 import cv2
@@ -9,6 +10,8 @@ import subprocess
 import pandas as pd
 import pdfkit
 import messages as m
+import glob
+import chardet
 
 
 IMG_EXT = {'.jpg', '.jpeg', '.jp2', '.png', '.tiff'}
@@ -30,21 +33,32 @@ def get_html_path(doc_path):
     return re.sub(r'\.[^.]*$', ".html", doc_path, flags=re.IGNORECASE)
 
 
+def get_encoding(doc_path):
+    default_enc = 'utf-8'
+    with open(doc_path, 'rb') as f:
+        enc = chardet.detect(f.readline()).get('encoding', default_enc)
+        print(enc)
+        if default_enc in enc.lower():
+            return default_enc
+        return enc
+
+
 def txt_to_pdf(doc_path):
     _, ext = os.path.splitext(doc_path)
     pdf_path = get_pdf_path(doc_path)
     html_path = get_html_path(doc_path)
+    enc = get_encoding(doc_path)
     if ext == ".txt":
-        with open(doc_path, 'r', encoding='utf-8') as txt_file:
-            with open(html_path, 'w') as res:
-                res.write(m.HTML_HEAD)
+        with open(doc_path, 'r', encoding=enc) as txt_file:
+            with open(html_path, 'w', encoding=enc) as res:
+                res.write(Template(m.HTML_HEAD).substitute(enc=enc))
                 for line in txt_file.readlines():
                     res.write("<p>" + line + "</p>\n")
-                print("imhere")
                 res.write(m.HTML_TAIL)
     else:
-        CSV = pd.read_csv(doc_path)
-        CSV.to_html(html_path)
+        CSV = pd.read_csv(doc_path, encoding=enc)
+        CSV = CSV.replace(np.nan, '', regex=True)
+        CSV.to_html(html_path, encoding=enc)
 
     pdfkit.from_file(html_path, pdf_path)
     return pdf_path
@@ -73,6 +87,7 @@ def ios_img_to_pdf(doc_path: str):
     png_path = get_png_path(doc_path)
     _, width, _ = np_array.shape
     fine_width_size = 1200
+    img = np_array
     if width > fine_width_size:
         scale = fine_width_size / width
         img = cv2.resize(np_array, (0, 0), fx=scale, fy=scale) 
