@@ -13,7 +13,7 @@ import messages as m
 import chardet
 
 
-IMG_EXT = {'.jpg', '.jpeg', '.jp2', '.png', '.tiff', '.bmp', '.gif'}
+IMG_EXT = {'.jpg', '.jpeg', '.jp2', '.png', '.tiff', '.bmp', '.gif', '.webp'}
 IMG_EXT_IOS = {'.heif', '.heic'}
 DOC_EXT = {'.doc', '.docx', '.odt'}
 XLS_EXT = {'.xls', '.xlsx', '.ods'}
