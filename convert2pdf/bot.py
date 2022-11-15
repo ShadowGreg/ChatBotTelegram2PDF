@@ -56,9 +56,10 @@ def handle_docs(message):
         downloaded_file = bot.download_file(file_info.file_path)
         full_file_name = file_save(message.chat.id, message.document.file_name, downloaded_file)
         result = file_switcher(full_file_name, message)
-        with open(result, 'rb') as result_file:
-            bot.send_document(message.chat.id, result_file)
-            data_base.connect_db(message)
+        if result:
+            with open(result, 'rb') as result_file :
+                bot.send_document(message.chat.id, result_file)
+                data_base.connect_db(message)
         clear_catalog(os.path.dirname(full_file_name))
     except Exception as e:
         logging.warning(e)
@@ -77,9 +78,10 @@ def photo(message):
     try:
         full_file_name = file_save(message.chat.id, file_name + file_extension, downloaded_file)
         result = file_switcher(full_file_name, message)
-        with open(result, 'rb') as result_file:
-            bot.send_document(message.chat.id, result_file)
-            data_base.connect_db(message)
+        if result:
+            with open(result, 'rb') as result_file:
+                bot.send_document(message.chat.id, result_file)
+                data_base.connect_db(message)
         clear_catalog(os.path.dirname(full_file_name))
     except Exception as e:
         logging.warning(e)
