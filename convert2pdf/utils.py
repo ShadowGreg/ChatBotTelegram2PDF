@@ -17,7 +17,6 @@ def file_save(chat_id, file_name, file):
         os.makedirs(path)
     # создаем путь конечного файла - думаю надо переделать - это временный вариант
     full_file_name = os.path.join(path, file_name)
-    print(full_file_name)
     # пишем файл на диск
     with open(full_file_name, 'wb') as new_file:
         new_file.write(file)
