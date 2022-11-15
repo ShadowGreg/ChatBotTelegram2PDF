@@ -60,7 +60,7 @@ def check_exist_db():
                     cur.execute("""CREATE TABLE IF NOT EXISTS users(
                     id integer PRIMARY KEY UNIQUE NOT NULL,
                     user_id integer UNIQUE NOT NULL,
-                    username text NOT NULL,
+                    username text,
                     registration_date text UNIQUE NOT NULL,
                     last_used text NOT NULL);""")
                 except sqlite3.DatabaseError as e:
