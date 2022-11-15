@@ -69,14 +69,20 @@ def handle_docs(message):
 
 
 # Чат бот принимает картинки.
-@bot.message_handler(content_types=['photo'])
+@bot.message_handler(content_types=['photo', 'sticker'])
 def photo(message):
-    file_id = message.photo[-1].file_id
+    content_type = message.content_type
+    if content_type == 'photo':
+        file_id = message.photo[-1].file_id
+    else:
+        file_id = message.sticker.file_id
     file_info = bot.get_file(file_id)
     file_name = file_info.file_unique_id
-    file_extension = '.' + file_info.file_path.split('.')[1]
+    if content_type == 'photo':
+        file_extension = '.' + file_info.file_path.split('.')[1]
+    else:
+        file_extension = ".webp"        
     full_file_name = ''
-
     downloaded_file = bot.download_file(file_info.file_path)
     try:
         full_file_name = file_save(message.chat.id, file_name + file_extension, downloaded_file)
