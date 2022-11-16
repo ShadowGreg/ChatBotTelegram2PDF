@@ -51,6 +51,7 @@ def handle_docs(message):
     сохранение любого типа файла на компьютер в указанную директорию
     :type message: object
     """
+    full_file_name = ''
     try:
         file_info = bot.get_file(message.document.file_id)
         downloaded_file = bot.download_file(file_info.file_path)
@@ -60,20 +61,28 @@ def handle_docs(message):
             with open(result, 'rb') as result_file :
                 bot.send_document(message.chat.id, result_file)
                 data_base.connect_db(message)
-        clear_catalog(os.path.dirname(full_file_name))
     except Exception as e:
         logging.warning(e)
         bot.reply_to(message, e)
+    
+    clear_catalog(os.path.dirname(full_file_name))
 
 
 # Чат бот принимает картинки.
-@bot.message_handler(content_types=['photo'])
+@bot.message_handler(content_types=['photo', 'sticker'])
 def photo(message):
-    file_id = message.photo[-1].file_id
+    content_type = message.content_type
+    if content_type == 'photo':
+        file_id = message.photo[-1].file_id
+    else:
+        file_id = message.sticker.file_id
     file_info = bot.get_file(file_id)
     file_name = file_info.file_unique_id
-    file_extension = '.' + file_info.file_path.split('.')[1]
-
+    if content_type == 'photo':
+        file_extension = '.' + file_info.file_path.split('.')[1]
+    else:
+        file_extension = ".webp"        
+    full_file_name = ''
     downloaded_file = bot.download_file(file_info.file_path)
     try:
         full_file_name = file_save(message.chat.id, file_name + file_extension, downloaded_file)
@@ -86,6 +95,8 @@ def photo(message):
     except Exception as e:
         logging.warning(e)
         bot.reply_to(message, e)
+    
+    clear_catalog(os.path.dirname(full_file_name))
 
 
 # Бот на любое сообщение пользователя, кроме файла

@@ -10,15 +10,15 @@ import subprocess
 import pandas as pd
 import pdfkit
 import messages as m
-import glob
 import chardet
 
 
-IMG_EXT = {'.jpg', '.jpeg', '.jp2', '.png', '.tiff'}
+IMG_EXT = {'.jpg', '.jpeg', '.jp2', '.png', '.tiff', '.bmp', '.gif', '.webp'}
 IMG_EXT_IOS = {'.heif', '.heic'}
 DOC_EXT = {'.doc', '.docx', '.odt'}
 XLS_EXT = {'.xls', '.xlsx', '.ods'}
 TXT_EXT = {'.txt', '.csv'}
+DEFAULT_ENCODING = 'utf-8'
 
 
 def get_pdf_path(doc_path):
@@ -34,11 +34,10 @@ def get_html_path(doc_path):
 
 
 def get_encoding(doc_path):
-    default_enc = 'utf-8'
+    default_enc = DEFAULT_ENCODING
     with open(doc_path, 'rb') as f:
         enc = chardet.detect(f.readline()).get('encoding', default_enc)
-        print(enc)
-        if default_enc in enc.lower():
+        if not enc or default_enc in enc.lower():
             return default_enc
         return enc
 
@@ -48,6 +47,7 @@ def txt_to_pdf(doc_path):
     pdf_path = get_pdf_path(doc_path)
     html_path = get_html_path(doc_path)
     enc = get_encoding(doc_path)
+    print(enc)
     if ext == ".txt":
         with open(doc_path, 'r', encoding=enc) as txt_file:
             with open(html_path, 'w', encoding=enc) as res:
@@ -58,7 +58,10 @@ def txt_to_pdf(doc_path):
     else:
         CSV = pd.read_csv(doc_path, encoding=enc)
         CSV = CSV.replace(np.nan, '', regex=True)
-        CSV.to_html(html_path, encoding=enc)
+        html = CSV.to_html()
+        with open(html_path, "w", encoding=enc) as file:
+            file.writelines(f'<meta charset="{enc}">\n')
+            file.write(html)
 
     pdfkit.from_file(html_path, pdf_path)
     return pdf_path
