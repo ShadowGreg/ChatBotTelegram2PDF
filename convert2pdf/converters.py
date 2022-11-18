@@ -4,6 +4,7 @@ import pillow_heif
 import numpy as np
 import cv2
 import img2pdf
+import io
 import re
 import os
 import subprocess
@@ -36,7 +37,7 @@ def get_html_path(doc_path):
 def get_encoding(doc_path):
     default_enc = DEFAULT_ENCODING
     with open(doc_path, 'rb') as f:
-        enc = chardet.detect(f.readline()).get('encoding', default_enc)
+        enc = chardet.detect(f.read()).get('encoding', default_enc)
         if not enc or default_enc in enc.lower():
             return default_enc
         return enc
@@ -70,17 +71,39 @@ def txt_to_pdf(doc_path):
 def img_to_pdf(doc_path: str):
     # получаем путь pdf
     pdf_path = get_pdf_path(doc_path)
-    
-    # открываем картинку
-    with Image.open(doc_path) as image:
-        # используем конвертер img2pdf
-        pdf_bytes = img2pdf.convert(image.filename)
-        # создаем pdf файл
-        with open(pdf_path, "wb") as file:
-            # пишем куски pdf файла
-            file.write(pdf_bytes)
+
+    # используем конвертер img2pdf
+    try:
+        pdf_bytes = img2pdf.convert(doc_path)
+    except img2pdf.AlphaChannelError as alphaError:
+        rgbBytes = _rgba_to(doc_path)
+        pdf_bytes = img2pdf.convert(rgbBytes)
+
+    # создаем pdf файл
+    with open(pdf_path, "wb") as file:
+        # пишем куски pdf файла
+        file.write(pdf_bytes)
     
     return pdf_path
+
+
+def _rgba_to(image: bytes or str, to='RGB', intermediate='PNG') -> bytes:
+    # Image is a filepath
+    if isinstance(image, str):
+        img = Image.open(image)
+        converted: Image = img.convert(to)
+
+    # Image is a bytestream
+    elif isinstance(image, bytes):
+        buffered = io.BytesIO(image)
+        img = Image.open(buffered)
+        converted: Image = img.convert(to)
+    else:
+        raise Exception(f"rgba downsampling only supported for images of type str (ie. filepath) or bytes - got {type(image)}")
+    buf = io.BytesIO()
+    converted.save(buf, format=intermediate)
+    byte_im = buf.getvalue()
+    return byte_im
 
 
 def ios_img_to_pdf(doc_path: str):
