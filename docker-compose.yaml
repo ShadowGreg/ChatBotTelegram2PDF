@@ -15,5 +15,4 @@ services:
         restart: always
         volumes:
             - ./db:/app/db
-            - ./config:/app/config
             - ./tmp_files:/app/tmp_files

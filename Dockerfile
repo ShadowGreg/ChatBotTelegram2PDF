@@ -13,6 +13,11 @@ RUN set -ex ;\
     apt-get clean && rm -rf /var/lib/apt/lists/* ;\
     touch TOKEN.env
 
+# установка макроса (для конвертера xls-файлов)
+RUN soffice --headless --nologo --nofirststartwizard --norestore 1.xlsx macro:///Standard.Module1.FitToPage
+RUN rm -f /root/.config/libreoffice/4/user/basic/Standard/Module1.xba
+COPY $project_path/*.xba /root/.config/libreoffice/4/user/basic/Standard/
+
 # копирование файла зависимостей
 COPY $project_path/requirements.txt .
 
@@ -21,11 +26,6 @@ RUN pip3 install -r requirements.txt
 
 # копирование проекта в образ
 COPY $project_path/*.py ./
-
-# установка макроса (для конвертера xls-файлов)
-RUN soffice --headless --nologo --nofirststartwizard --norestore 1.xlsx macro:///Standard.Module1.FitToPage
-RUN rm -f /root/.config/libreoffice/4/user/basic/Standard/Module1.xba
-COPY $project_path/*.xba /root/.config/libreoffice/4/user/basic/Standard/
 
 # запуск скрипта при запуске контейнера
 ENTRYPOINT ["python3", "main.py"]
