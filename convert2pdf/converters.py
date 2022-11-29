@@ -1,5 +1,6 @@
 from PIL import Image
 from string import Template
+from detect_delimiter import detect
 import pillow_heif
 import numpy as np
 import cv2
@@ -42,12 +43,18 @@ def get_encoding(doc_path):
             return default_enc
         return enc
 
+def get_delimiter(doc_path, enc):
+    with open(doc_path, 'r', encoding=enc) as f:
+        data = f.read()
+        return detect(data, default=",")
+
 
 def txt_to_pdf(doc_path):
     _, ext = os.path.splitext(doc_path)
     pdf_path = get_pdf_path(doc_path)
     html_path = get_html_path(doc_path)
     enc = get_encoding(doc_path)
+    delimiter = get_delimiter(doc_path, enc)
     print(enc)
     if ext == ".txt":
         with open(doc_path, 'r', encoding=enc) as txt_file:
@@ -57,7 +64,7 @@ def txt_to_pdf(doc_path):
                     res.write("<p>" + line + "</p>\n")
                 res.write(m.HTML_TAIL)
     else:
-        CSV = pd.read_csv(doc_path, encoding=enc)
+        CSV = pd.read_csv(doc_path, encoding=enc, delimiter=delimiter)
         CSV = CSV.replace(np.nan, '', regex=True)
         html = CSV.to_html()
         with open(html_path, "w", encoding=enc) as file:
